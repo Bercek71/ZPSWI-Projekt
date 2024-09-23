@@ -1,5 +1,5 @@
 # ZPSWI-Projekt
-## Tým 1:
+## Zadání naší role zákazníka:
 Agile zadání: E-commerce platforma
 Vytvořte systém pro online obchodování, včetně správy produktů, košíku, plateb a recenzí.
 Klasické zadání: Systém pro správu zdravotních záznamů
