@@ -74,3 +74,20 @@ Problémy budou řešeny operativně v rámci komentářů na Jiře, v případ�
 
 - **Retrospektiva:** 
  Po každém sprintu proběhne retrospektiva, sejdeme se a budem řešit naše úspěchy a nedostatky a způsob nápravy pro zlepšení. Na základě zpětné vazby se budou upravovat procesy pro další sprinty pro zvýšení efektivity a správnosti implementace každého sprintu.
+
+
+## Procesní postup
+- Vytvoření epiců do backlogu
+- rozčlenění epiců na jednoduché user stories
+- rozdělení user stories podle priorit a schopnosti technické realizace a mezi týmy
+- naplánovat sprint - první sprint vytvoření MWP (minimal working product), zaměření se na jednoduché user stories (autorizace, DB, CRUD operace)
+- navrhnout DB
+- Připravit autorizaci
+- Vystavit jednoduché REST webAPI
+- připravit webovou aplikace
+- napsat akceptační testy
+- bastlení kódu
+- unit testy
+- integrační testy
+- merge
+
