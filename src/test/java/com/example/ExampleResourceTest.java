@@ -1,10 +1,7 @@
 package com.example;
 
-import com.persistence.Room;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
