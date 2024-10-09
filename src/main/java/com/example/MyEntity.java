@@ -1,6 +1,7 @@
 package com.example;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.Entity;
 
 
@@ -25,5 +26,7 @@ import jakarta.persistence.Entity;
  */
 @Entity
 public class MyEntity extends PanacheEntity {
+    @JsonbProperty("field")
     public String field;
+
 }
