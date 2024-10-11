@@ -43,6 +43,10 @@ insert into City(id, name, zip_code, country_id) values (26,'Brno', 60200, 9);
 insert into City(id, name, zip_code, country_id) values (27,'Ostrava', 70200, 9);
 
 
+insert into street (id, name, land_registry_number, house_number, city_id) values (1, 'Rue de Rivoli', 123456, 1, 1);
+insert into street (id, name, land_registry_number, house_number, city_id) values (2, 'Avenue des Champs-Élysées', 123457, 2, 1);
+
+
 
 insert into hotel(id, name, country_id) values (1,'Hotel de Crillon', 1);
 insert into hotel(id, name, country_id) values (2,'Hotel Ritz', 1);
@@ -110,4 +114,10 @@ insert into room(id, room_number, price_per_night, type, is_available, hotel_id)
 insert into room(id, room_number, price_per_night, type, is_available, hotel_id) values (44, 801, 100, 'SINGLE', true, 8);
 insert into room(id, room_number, price_per_night, type, is_available, hotel_id) values (45, 802, 200, 'DOUBLE', true, 8);
 insert into room(id, room_number, price_per_night, type, is_available, hotel_id) values (46, 803, 300, 'SINGLE', true, 8);
+
+insert into booking(id, price_total, app_user_id) values (1, 100, 1);
+insert into booking(id, price_total, app_user_id) values (2, 200, 1);
+
+insert into Reservation(id, start_date, end_date, room_id, status, price, paid_at, booking_id) values (1, '2020-01-01', '2020-01-10', 1, 'CONFIRMED', 100, '2020-01-01', 1);
+insert into Reservation(id, start_date, end_date, room_id, status, price, paid_at, booking_id) values (2, '2020-01-01', '2020-01-10', 2, 'CONFIRMED', 200, '2020-01-01', 1);
 

@@ -40,11 +40,12 @@ public class Reservation extends EntityBase {
     @JsonbProperty("bookingId")
     public Booking booking;
 
-
+    //TODO: Thing of statuses
     public enum ReservationStatus {
         PENDING,
         ACCEPTED,
         CANCELLED,
+        CONFIRMED,
         PAID,
         PAYMENT_ACCEPTED,
         ENDED,
