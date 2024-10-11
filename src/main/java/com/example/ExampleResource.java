@@ -1,6 +1,6 @@
 package com.example;
 
-import com.persistence.Room;
+import com.persistence.ExampleRoom;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -20,8 +20,8 @@ public class ExampleResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response hello() {
         try{
-            List<Room> rooms = Room.listAll();
-            return Response.ok(rooms).build();
+            List<ExampleRoom> exampleRooms = ExampleRoom.listAll();
+            return Response.ok(exampleRooms).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -32,11 +32,11 @@ public class ExampleResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRoom(@PathParam("id") Long id) {
         try {
-            Room room = Room.findById(id);
-            if (room == null) {
+            ExampleRoom exampleRoom = ExampleRoom.findById(id);
+            if (exampleRoom == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
-            return Response.ok(room).build();
+            return Response.ok(exampleRoom).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
