@@ -9,12 +9,16 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
+
 @Entity
 @Table(name = "review")
 public class Review extends PanacheEntityBase {
 
     @Embeddable
-    public class ReviewId {
+    @EqualsAndHashCode
+    public static class ReviewId {
+
         public int hotelId;
         public int userId;
     }
