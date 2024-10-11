@@ -1,10 +1,7 @@
 package com.persistence;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
+import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,26 +10,45 @@ import java.time.LocalDateTime;
 @Table(name = "reservation")
 public class Reservation extends EntityBase {
     @Column(name = "start_date")
+    @JsonbProperty("startDate")
     public LocalDate startDate;
 
     @Column(name = "end_date")
+    @JsonbProperty("endDate")
     public LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @JsonbProperty("roomId")
     public Room room;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    public Status status;
+
+    @Enumerated(EnumType.STRING)
+    @JsonbProperty("status")
+    public ReservationStatus status;
 
     @Column(name = "price")
+    @JsonbProperty("price")
     public int price;
 
     @Column(name = "paid_at")
+    @JsonbProperty("paidAt")
     public LocalDateTime paidAt;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "booking_id")
+    @JsonbProperty("bookingId")
     public Booking booking;
+
+
+    public enum ReservationStatus {
+        PENDING,
+        ACCEPTED,
+        CANCELLED,
+        PAID,
+        PAYMENT_ACCEPTED,
+        ENDED,
+        EXPIRED,
+
+    }
 }

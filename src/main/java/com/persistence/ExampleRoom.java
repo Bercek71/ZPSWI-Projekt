@@ -27,7 +27,7 @@ import lombok.Getter;
      * }
      */
     @Entity
-    @Table(name="room")
+    @Table(name="example_room")
     public class ExampleRoom extends EntityBase {
         @Column(name = "name")
         @JsonbProperty("name")

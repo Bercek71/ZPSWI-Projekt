@@ -1,5 +1,6 @@
 package com.persistence;
 
+import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -10,12 +11,15 @@ import jakarta.persistence.JoinColumn;
 @Table(name = "city")
 public class City extends EntityBase {
     @Column(name = "name")
+    @JsonbProperty("name")
     public String name;
 
     @Column(name = "zip_code")
+    @JsonbProperty("zipCode")
     public int zipCode;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "country_id")
+    @JsonbProperty("countryId")
     public Country country;
 }
