@@ -5,14 +5,14 @@ import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class EntityBase extends PanacheEntityBase {
+@MappedSuperclass
+public abstract class EntityBase extends PanacheEntityBase {
 
     @Getter
     @Id
-    @GeneratedValue(generator = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonbProperty("id")
     private long id;
+
 
 }
