@@ -24,6 +24,12 @@ public class Booking extends EntityBase {
         return (appUser != null) ? appUser.getId() : null;
     }
 
+    public void setAppUserId(Long appUserId) {
+        if (appUserId != null) {
+            this.appUser = AppUser.findById(appUserId);
+        }
+    }
+
     @JsonbProperty("appUser")
     public AppUser getAppUserIfExpanded() {
         if (Hibernate.isInitialized(this.appUser)) {
