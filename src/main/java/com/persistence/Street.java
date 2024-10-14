@@ -1,5 +1,6 @@
 package com.persistence;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "street")
-public class Street extends EntityBase {
+public class Street extends PanacheEntity {
     @Column(name = "name")
     @JsonbProperty("name")
     public String name;

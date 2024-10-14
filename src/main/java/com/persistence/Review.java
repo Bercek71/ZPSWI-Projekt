@@ -1,5 +1,6 @@
 package com.persistence;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.Entity;
@@ -13,16 +14,15 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "review")
-public class Review extends PanacheEntityBase {
+public class Review extends PanacheEntity {
 
     @Embeddable
     @EqualsAndHashCode
     public static class ReviewId {
-
-        public int hotelId;
-        public int userId;
+        public Long hotelId;
+        public Long userId;
     }
-    @EmbeddedId
+
     public ReviewId reviewId;
 
     @ManyToOne

@@ -1,5 +1,6 @@
 package com.persistence;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.*;
 
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservation")
-public class Reservation extends EntityBase {
+public class Reservation extends PanacheEntity {
     @Column(name = "start_date")
     @JsonbProperty("startDate")
     public LocalDate startDate;
@@ -21,7 +22,6 @@ public class Reservation extends EntityBase {
     @JoinColumn(name = "room_id")
     @JsonbProperty("roomId")
     public Room room;
-
 
     @Enumerated(EnumType.STRING)
     @JsonbProperty("status")

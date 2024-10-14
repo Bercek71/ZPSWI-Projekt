@@ -13,7 +13,7 @@ import java.util.List;
 
 
 //Ukázka použití JPA entity a transakce v REST endpointu
-@Path("/rooms")
+@Path("/roomss")
 public class ExampleResource {
     @GET
     @Transactional

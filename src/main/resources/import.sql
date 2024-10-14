@@ -121,3 +121,11 @@ insert into booking(id, price_total, app_user_id) values (2, 200, 1);
 insert into Reservation(id, start_date, end_date, room_id, status, price, paid_at, booking_id) values (1, '2020-01-01', '2020-01-10', 1, 'CONFIRMED', 100, '2020-01-01', 1);
 insert into Reservation(id, start_date, end_date, room_id, status, price, paid_at, booking_id) values (2, '2020-01-01', '2020-01-10', 2, 'CONFIRMED', 200, '2020-01-01', 1);
 
+ALTER SEQUENCE app_user_seq RESTART WITH 3;
+ALTER SEQUENCE hotel_seq RESTART WITH 24;
+ALTER SEQUENCE room_seq RESTART WITH 61;
+ALTER SEQUENCE city_seq RESTART WITH 28;
+ALTER SEQUENCE street_seq RESTART WITH 3;
+ALTER SEQUENCE booking_seq RESTART WITH 3;
+ALTER SEQUENCE reservation_seq RESTART WITH 3;
+ALTER SEQUENCE app_user_seq RESTART WITH 3;

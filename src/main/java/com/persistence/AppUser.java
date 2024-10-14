@@ -1,11 +1,12 @@
 package com.persistence;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "app_user")
-public class AppUser extends EntityBase {
+public class AppUser extends PanacheEntity {
     @Column(name = "first_name")
     @JsonbProperty("firstName")
     public String firstName;
