@@ -64,11 +64,6 @@ public class EndpointBase {
             //Match class by entity param
             Class<? extends PanacheEntityBase> entityClass = getEntityClass(entityName);
 
-            if (entityClass == null) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Entity class not found for: " + entityName + " body: " + requestBody).build();
-            }
-
             //Deserialization
             Jsonb jsonb = JsonbBuilder.create();
             PanacheEntityBase entity = jsonb.fromJson(requestBody, entityClass);
