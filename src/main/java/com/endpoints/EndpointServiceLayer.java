@@ -45,9 +45,7 @@ public class EndpointServiceLayer {
                 Room.delete("hotel.id", id);
             }
 
-            //Use of reflection to invoke method
-            Method findByIdMethod = entityClass.getMethod("findById", Object.class);
-            T entity = (T) findByIdMethod.invoke(null, id);
+            T entity = findById(entityClass, id);
             if (entity != null) {
                 entity.delete();
                 return true;
