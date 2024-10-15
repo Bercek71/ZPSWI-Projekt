@@ -9,6 +9,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.lang.reflect.Method;
 import java.util.List;
 
+//Service layer beru zpět. Nemáme tolik entit a zárověň používáme PanacheEntityBase,
+//který funguje jako active record, takže nějakou bussiness logiku můžeme mít přímo v entitách.
+//Toto je zbytečně komplikované, bude se to špatně udržovat.
 @ApplicationScoped
 public class EndpointServiceLayer {
 

@@ -11,6 +11,15 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+//Toto nemá smysl, nemůžeme použít efektivně s autorizací.
+//Uživatel přece nemůže mít přístup ke všem položkám všech entit.
+//Měli bychom vytvořit endpointy pro každou entitu zvlášť, abychom mohli potom přidat autorizaci.
+//Zároveň se to bude lépe číst a bude to jednodušší na údržbu.
+
+//TODO: Implementovat endpointy pro každou entitu zvlášť, nazvat jako Resource např. BookingResource, CityResource, CountryResource,
+// abychom, mohli potom přidat autorizaci, případně skrývání některých položek. Zároveň se to bude lépe číst a bude to jednodušší na údržbu.
+
+
 @Path("{entity}s")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
