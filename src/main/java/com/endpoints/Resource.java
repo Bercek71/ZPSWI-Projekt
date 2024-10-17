@@ -28,7 +28,7 @@ public interface Resource<T extends PanacheEntity> {
     Response create(PanacheEntity entity);
 
     @PUT
-    @Path("/update/{id}")
+    @Path("/update/")
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
