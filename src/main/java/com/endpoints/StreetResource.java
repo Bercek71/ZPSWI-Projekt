@@ -12,7 +12,7 @@ import java.util.List;
 @Path("streets")
 public class StreetResource extends PanacheEntity implements Resource<Street> {
 
-
+    @Path("streets")
     public Response findAllEntities() {
         List<Street> streets = Street.listAll();
         if(streets.isEmpty()) {

@@ -12,6 +12,7 @@ import java.util.List;
 @Path("hotels")
 public class HotelResource extends PanacheEntity implements Resource<Hotel> {
 
+    @Path("hotels")
     public Response findAllEntities() {
         List<Hotel> hotels = Hotel.listAll();
         if(hotels.isEmpty()) {

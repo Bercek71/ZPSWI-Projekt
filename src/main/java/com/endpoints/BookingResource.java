@@ -12,7 +12,7 @@ import java.util.List;
 @Path("bookings")
 public class BookingResource extends PanacheEntity implements Resource<Booking> {
 
-
+    @Path("bookings")
     public Response findAllEntities() {
        List<Booking> bookings = Booking.listAll();
        if(bookings.isEmpty()) {

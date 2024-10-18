@@ -11,6 +11,7 @@ import java.util.List;
 @Path("users")
 public class UserResource extends PanacheEntity implements Resource<AppUser> {
 
+    @Path("users")
     public Response findAllEntities() {
         List<AppUser> users = AppUser.listAll();
         if(users.isEmpty()) {

@@ -13,6 +13,7 @@ import java.util.List;
 @Path("reviews")
 public class ReviewResource extends PanacheEntity implements Resource<Review> {
 
+    @Path("reviews")
     public Response findAllEntities() {
         List<Review> reviews = Review.listAll();
         if(reviews.isEmpty()) {
