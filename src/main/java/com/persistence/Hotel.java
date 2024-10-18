@@ -13,6 +13,9 @@ public class Hotel extends PanacheEntity {
 
     @ManyToOne
     @JoinColumn(name = "country_id")
-    @JsonbProperty("countryId")
     public Country country;
+
+    @Transient
+    @JsonbProperty("countryId")
+    public Long countryId;
 }

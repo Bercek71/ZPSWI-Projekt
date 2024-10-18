@@ -2,11 +2,7 @@ package com.persistence;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.bind.annotation.JsonbProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "city")
@@ -21,6 +17,9 @@ public class City extends PanacheEntity {
 
     @ManyToOne
     @JoinColumn(name = "country_id")
-    @JsonbProperty("countryId")
     public Country country;
+
+    @Transient
+    @JsonbProperty("countryId")
+    public Long countryId;
 }

@@ -2,12 +2,7 @@ package com.persistence;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.bind.annotation.JsonbProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 @Entity
@@ -25,8 +20,11 @@ public class Review extends PanacheEntity {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
-    @JsonbProperty("hotelId")
     public Hotel hotel;
+
+    @Transient
+    @JsonbProperty("hotelId")
+    public Long hotelId;
 
     @Column(name = "message", length = 2000)
     @JsonbProperty("message")
@@ -34,8 +32,11 @@ public class Review extends PanacheEntity {
 
     @ManyToOne
     @JoinColumn(name = "app_user_id")
-    @JsonbProperty("appUserId")
     public AppUser appUser;
+
+    @Transient
+    @JsonbProperty("userId")
+    public Long userId;
 
     @Column(name = "rating")
     @JsonbProperty("rating")

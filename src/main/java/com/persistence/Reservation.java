@@ -20,8 +20,11 @@ public class Reservation extends PanacheEntity {
 
     @ManyToOne
     @JoinColumn(name = "room_id")
-    @JsonbProperty("roomId")
     public Room room;
+
+    @Transient
+    @JsonbProperty("roomId")
+    public Long roomId;
 
     @Enumerated(EnumType.STRING)
     @JsonbProperty("status")
@@ -37,8 +40,11 @@ public class Reservation extends PanacheEntity {
 
     @ManyToOne
     @JoinColumn(name = "booking_id")
-    @JsonbProperty("bookingId")
     public Booking booking;
+
+    @Transient
+    @JsonbProperty("bookingId")
+    public Long bookingId;
 
     //TODO: Thing of statuses
     public enum ReservationStatus {
