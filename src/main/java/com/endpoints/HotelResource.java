@@ -1,14 +1,17 @@
 package com.endpoints;
 
-import com.persistence.Booking;
+import com.persistence.Country;
 import com.persistence.Hotel;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+@Path("hotels")
 public class HotelResource extends PanacheEntity implements Resource<Hotel> {
-    @Override
+
     public Response findAllEntities() {
         List<Hotel> hotels = Hotel.listAll();
         if(hotels.isEmpty()) {
@@ -26,23 +29,52 @@ public class HotelResource extends PanacheEntity implements Resource<Hotel> {
         return Response.ok(hotel).build();
     }
 
+    @Transactional
     @Override
-    public Response create(PanacheEntity entity) {
+    public Response create(Hotel hotel) {
         try{
-            entity.persist();
+            hotel.country = Country.findById(hotel.countryId);
+            hotel.persist();
         } catch(Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @Transactional
     @Override
-    public Response update(PanacheEntity entity) {
-        return null;
+    public Response update(Long id, Hotel hotel) {
+        Hotel updateHotel = Hotel.findById(id);
+
+        if(updateHotel == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+        }
+
+        try{
+            updateHotel.country = Country.findById(hotel.countryId);
+            updateHotel.name = hotel.name;
+            updateHotel.persist();
+
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+        }
+        return Response.ok(updateHotel).build();
     }
 
+    @Transactional
     @Override
     public Response delete(Long id) {
-        return null;
+
+        Hotel hotel = Hotel.findById(id);
+
+        if(hotel == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+        }
+        try{
+            hotel.delete();
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+        }
+        return Response.status(Response.Status.OK).entity(hotel).build();
     }
 }

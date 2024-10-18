@@ -1,9 +1,11 @@
 package com.endpoints;
 
 import com.persistence.AppUser;
-import com.persistence.Booking;
+import com.persistence.Country;
+import com.persistence.Hotel;
 import com.persistence.Review;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
@@ -12,7 +14,6 @@ import java.util.List;
 @Path("reviews")
 public class ReviewResource extends PanacheEntity implements Resource<Review> {
 
-    @Override
     public Response findAllEntities() {
         List<Review> reviews = Review.listAll();
         if(reviews.isEmpty()) {
@@ -30,21 +31,43 @@ public class ReviewResource extends PanacheEntity implements Resource<Review> {
         return Response.ok(user).build();
     }
 
+    @Transactional
     @Override
-    public Response create(PanacheEntity entity) {
+    public Response create(Review review) {
         try{
-            entity.persist();
+            review.hotel = HotelResource.findById(review.hotelId);
+            review.appUser = AppUser.findById(review.userId);
+            review.persist();
         } catch(Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @Transactional
     @Override
-    public Response update(PanacheEntity entity) {
-        return null;
+    public Response update(Long id, Review review) {
+        Review updateReview = Review.findById(id);
+
+        if(updateReview == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+        }
+
+        try{
+            updateReview.hotel = Hotel.findById(review.hotelId);
+            updateReview.message = review.message;
+            updateReview.appUser = AppUser.findById(review.userId);
+            updateReview.rating = review.rating;
+
+            updateReview.persist();
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+        }
+        return Response.ok(updateReview).build();
     }
 
+
+    @Transactional
     @Override
     public Response delete(Long id) {
         return null;

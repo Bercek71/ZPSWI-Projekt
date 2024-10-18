@@ -1,9 +1,11 @@
 package com.endpoints;
 
 import com.persistence.AppUser;
+import com.persistence.Country;
+import com.persistence.Hotel;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
@@ -11,7 +13,6 @@ import java.util.List;
 @Path("users")
 public class UserResource extends PanacheEntity implements Resource<AppUser> {
 
-    @Override
     public Response findAllEntities() {
         List<AppUser> users = AppUser.listAll();
         if(users.isEmpty()) {
@@ -29,23 +30,54 @@ public class UserResource extends PanacheEntity implements Resource<AppUser> {
         return Response.ok(user).build();
     }
 
+    @Transactional
     @Override
-    public Response create(PanacheEntity entity) {
+    public Response create(AppUser user) {
         try{
-            entity.persist();
+            user.persist();
         } catch(Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @Transactional
     @Override
-    public Response update(PanacheEntity entity) {
-        return null;
+    public Response update(Long id, AppUser user) {
+        AppUser updateUser = AppUser.findById(id);
+
+        if(updateUser == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+        }
+
+        try{
+            updateUser.firstName = user.firstName;
+            updateUser.lastName = user.lastName;
+            updateUser.email = user.email;
+            updateUser.password = user.password;
+            updateUser.role = user.role;
+
+            updateUser.persist();
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+        }
+        return Response.ok(updateUser).build();
     }
 
+
+    @Transactional
     @Override
     public Response delete(Long id) {
-        return null;
+        //Need to check for constraints
+        AppUser user = AppUser.findById(id);
+        if(user == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found.").build();
+        }
+        try{
+            user.delete();
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+        }
+        return Response.status(Response.Status.OK).entity("Entity " + user + "deleted.").build();
     }
 }

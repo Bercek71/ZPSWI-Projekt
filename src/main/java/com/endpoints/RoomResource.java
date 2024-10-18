@@ -1,16 +1,19 @@
 package com.endpoints;
 
-import com.persistence.AppUser;
-import com.persistence.Booking;
+import com.persistence.Country;
+import com.persistence.Hotel;
 import com.persistence.Room;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+@Path("rooms")
 public class RoomResource  extends PanacheEntity implements Resource<Room> {
 
-    @Override
+    @Path("rooms")
     public Response findAllEntities() {
         List<Room> rooms = Room.listAll();
         if(rooms.isEmpty()) {
@@ -28,21 +31,43 @@ public class RoomResource  extends PanacheEntity implements Resource<Room> {
         return Response.ok(room).build();
     }
 
+    @Transactional
     @Override
-    public Response create(PanacheEntity entity) {
+    public Response create(Room room) {
         try{
-            entity.persist();
+            room.hotel = Hotel.findById(room.hotelId);
+            room.persist();
         } catch(Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @Transactional
     @Override
-    public Response update(PanacheEntity entity) {
-        return null;
+    public Response update(Long id, Room room) {
+        Room updateRoom = Room.findById(id);
+
+        if(updateRoom == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+        }
+
+        try{
+            updateRoom.roomNumber = room.roomNumber;
+            updateRoom.type = room.type;
+            updateRoom.pricePerNight = room.pricePerNight;
+            updateRoom.isAvailable = room.isAvailable;
+            updateRoom.hotel = Hotel.findById(room.hotelId);
+
+            updateRoom.persist();
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+        }
+        return Response.ok(updateRoom).build();
     }
 
+
+    @Transactional
     @Override
     public Response delete(Long id) {
         return null;

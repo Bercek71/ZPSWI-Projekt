@@ -1,7 +1,11 @@
 package com.endpoints;
 
+import com.persistence.AppUser;
 import com.persistence.Booking;
+import com.persistence.Country;
+import com.persistence.Hotel;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
@@ -10,7 +14,7 @@ import java.util.List;
 @Path("bookings")
 public class BookingResource extends PanacheEntity implements Resource<Booking> {
 
-    @Override
+
     public Response findAllEntities() {
        List<Booking> bookings = Booking.listAll();
        if(bookings.isEmpty()) {
@@ -29,20 +33,38 @@ public class BookingResource extends PanacheEntity implements Resource<Booking> 
     }
 
     @Override
-    public Response create(PanacheEntity entity) {
+    public Response create(Booking booking) {
         try{
-            entity.persist();
+            booking.appUser = AppUser.findById(booking.userId);
+            booking.persist();
         } catch(Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @Transactional
     @Override
-    public Response update(PanacheEntity entity) {
-        return null;
+    public Response update(Long id, Booking booking) {
+
+        Booking updateBooking = Booking.findById(id);
+
+        if(updateBooking == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Booking not found.").build();
+        }
+
+        try{
+            updateBooking.appUser = AppUser.findById(booking.userId);
+            updateBooking.priceTotal = booking.priceTotal;
+            updateBooking.persist();
+
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+        }
+        return Response.ok(updateBooking).build();
     }
 
+    @Transactional
     @Override
     public Response delete(Long id) {
         return null;

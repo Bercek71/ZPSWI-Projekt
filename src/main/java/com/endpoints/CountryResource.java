@@ -1,16 +1,17 @@
 package com.endpoints;
 
-import com.persistence.AppUser;
-import com.persistence.Booking;
 import com.persistence.Country;
+import com.persistence.Hotel;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+@Path("countries")
 public class CountryResource extends PanacheEntity implements Resource<Country> {
 
-    @Override
     public Response findAllEntities() {
         List<Country> countries = Country.listAll();
         if(countries.isEmpty()) {
@@ -28,21 +29,38 @@ public class CountryResource extends PanacheEntity implements Resource<Country> 
         return Response.ok(country).build();
     }
 
+    @Transactional
     @Override
-    public Response create(PanacheEntity entity) {
+    public Response create(Country country) {
         try{
-            entity.persist();
+            country.persist();
         } catch(Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @Transactional
     @Override
-    public Response update(PanacheEntity entity) {
-        return null;
+    public Response update(Long id, Country country) {
+        Country updateCountry = Country.findById(id);
+
+        if(updateCountry == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+        }
+
+        try{
+            updateCountry.name = country.name;
+            updateCountry.isoCode = country.isoCode;
+
+            updateCountry.persist();
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+        }
+        return Response.ok(updateCountry).build();
     }
 
+    @Transactional
     @Override
     public Response delete(Long id) {
         return null;

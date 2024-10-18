@@ -1,16 +1,18 @@
 package com.endpoints;
 
-import com.persistence.AppUser;
-import com.persistence.Booking;
 import com.persistence.City;
+import com.persistence.Country;
+import com.persistence.Hotel;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+@Path("cities")
 public class CityResource  extends PanacheEntity implements Resource<City> {
 
-    @Override
     public Response findAllEntities() {
         List<City> cities = City.listAll();
         if(cities.isEmpty()) {
@@ -29,20 +31,37 @@ public class CityResource  extends PanacheEntity implements Resource<City> {
     }
 
     @Override
-    public Response create(PanacheEntity entity) {
+    public Response create(City city) {
         try{
-            entity.persist();
+            city.country = Country.findById(city.countryId);
+            city.persist();
         } catch(Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @Transactional
     @Override
-    public Response update(PanacheEntity entity) {
-        return null;
-    }
+    public Response update(Long id, City city) {
+        City updateCity = City.findById(id);
 
+        if(updateCity == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("City not found.").build();
+        }
+
+        try{
+            updateCity.country = Country.findById(city.countryId);
+            updateCity.name = city.name;
+            updateCity.zipCode = city.zipCode;
+
+            updateCity.persist();
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+        }
+        return Response.ok(updateCity).build();
+    }
+    @Transactional
     @Override
     public Response delete(Long id) {
         return null;
