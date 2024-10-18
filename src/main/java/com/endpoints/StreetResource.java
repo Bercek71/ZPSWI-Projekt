@@ -1,8 +1,6 @@
 package com.endpoints;
 
 import com.persistence.City;
-import com.persistence.Country;
-import com.persistence.Hotel;
 import com.persistence.Street;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
@@ -50,7 +48,7 @@ public class StreetResource extends PanacheEntity implements Resource<Street> {
         Street updateStreet = Street.findById(id);
 
         if(updateStreet == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Street not found.").build();
         }
 
         try{

@@ -2,7 +2,6 @@ package com.endpoints;
 
 import com.persistence.City;
 import com.persistence.Country;
-import com.persistence.Hotel;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;

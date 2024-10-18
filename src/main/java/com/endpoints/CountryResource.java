@@ -1,7 +1,6 @@
 package com.endpoints;
 
 import com.persistence.Country;
-import com.persistence.Hotel;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
@@ -46,7 +45,7 @@ public class CountryResource extends PanacheEntity implements Resource<Country> 
         Country updateCountry = Country.findById(id);
 
         if(updateCountry == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Country not found.").build();
         }
 
         try{

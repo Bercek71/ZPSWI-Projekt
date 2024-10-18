@@ -1,7 +1,6 @@
 package com.endpoints;
 
 import com.persistence.AppUser;
-import com.persistence.Country;
 import com.persistence.Hotel;
 import com.persistence.Review;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -50,7 +49,7 @@ public class ReviewResource extends PanacheEntity implements Resource<Review> {
         Review updateReview = Review.findById(id);
 
         if(updateReview == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Review not found.").build();
         }
 
         try{

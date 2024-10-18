@@ -1,6 +1,5 @@
 package com.endpoints;
 
-import com.persistence.Country;
 import com.persistence.Hotel;
 import com.persistence.Room;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -49,7 +48,7 @@ public class RoomResource  extends PanacheEntity implements Resource<Room> {
         Room updateRoom = Room.findById(id);
 
         if(updateRoom == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Room not found.").build();
         }
 
         try{

@@ -2,7 +2,6 @@ package com.endpoints;
 
 import com.persistence.AppUser;
 import com.persistence.Booking;
-import com.persistence.Country;
 import com.persistence.Reservation;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
@@ -50,7 +49,7 @@ public class ReservationResource extends PanacheEntity implements Resource<Reser
         Reservation updateReservation = Reservation.findById(id);
 
         if(updateReservation == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Reservation not found.").build();
         }
 
         try{

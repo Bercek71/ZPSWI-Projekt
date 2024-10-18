@@ -2,8 +2,6 @@ package com.endpoints;
 
 import com.persistence.AppUser;
 import com.persistence.Booking;
-import com.persistence.Country;
-import com.persistence.Hotel;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Path;
