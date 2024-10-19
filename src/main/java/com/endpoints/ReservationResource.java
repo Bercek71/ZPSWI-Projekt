@@ -5,7 +5,10 @@ import com.persistence.Booking;
 import com.persistence.Reservation;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
@@ -13,6 +16,8 @@ import java.util.List;
 @Path("reservations")
 public class ReservationResource extends PanacheEntity implements Resource<Reservation> {
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
         List<Reservation> reservations = Reservation.listAll();
         if(reservations.isEmpty()) {

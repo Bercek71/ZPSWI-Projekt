@@ -4,7 +4,10 @@ import com.persistence.City;
 import com.persistence.Country;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
@@ -12,7 +15,8 @@ import java.util.List;
 @Path("cities")
 public class CityResource  extends PanacheEntity implements Resource<City> {
 
-    @Path("cities")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
         List<City> cities = City.listAll();
         if(cities.isEmpty()) {

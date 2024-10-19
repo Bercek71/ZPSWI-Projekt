@@ -3,7 +3,10 @@ package com.endpoints;
 import com.persistence.Country;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
@@ -11,7 +14,8 @@ import java.util.List;
 @Path("countries")
 public class CountryResource extends PanacheEntity implements Resource<Country> {
 
-    @Path("countries")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
         List<Country> countries = Country.listAll();
         if(countries.isEmpty()) {
