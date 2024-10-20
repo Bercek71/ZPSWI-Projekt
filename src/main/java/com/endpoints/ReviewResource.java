@@ -14,7 +14,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("reviews")
-public class ReviewResource extends PanacheEntity implements Resource<Review> {
+public class ReviewResource implements Resource<Review> {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,7 +39,7 @@ public class ReviewResource extends PanacheEntity implements Resource<Review> {
     @Override
     public Response create(Review review) {
         try{
-            review.hotel = HotelResource.findById(review.hotelId);
+            review.hotel = Hotel.findById(review.hotelId);
             review.appUser = AppUser.findById(review.userId);
             review.persist();
         } catch(Exception e){

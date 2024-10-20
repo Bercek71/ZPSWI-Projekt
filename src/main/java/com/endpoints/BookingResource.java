@@ -13,7 +13,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("bookings")
-public class BookingResource extends PanacheEntity implements Resource<Booking> {
+public class BookingResource implements Resource<Booking> {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

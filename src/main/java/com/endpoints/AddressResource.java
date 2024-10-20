@@ -13,7 +13,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("addresses")
-public class AddressResource extends PanacheEntity implements Resource<Address> {
+public class AddressResource implements Resource<Address> {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -38,7 +38,7 @@ public class AddressResource extends PanacheEntity implements Resource<Address> 
     @Override
     public Response create(Address address) {
         try{
-            address.city = CityResource.findById(address.cityId);
+            address.city = City.findById(address.cityId);
             address.persist();
         } catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();

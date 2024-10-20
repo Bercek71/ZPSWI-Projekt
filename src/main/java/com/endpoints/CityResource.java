@@ -13,7 +13,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("cities")
-public class CityResource  extends PanacheEntity implements Resource<City> {
+public class CityResource implements Resource<City> {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

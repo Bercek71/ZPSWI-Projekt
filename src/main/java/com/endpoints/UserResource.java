@@ -12,7 +12,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("users")
-public class UserResource extends PanacheEntity implements Resource<AppUser> {
+public class UserResource implements Resource<AppUser> {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
