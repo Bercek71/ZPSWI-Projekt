@@ -5,7 +5,15 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public interface Resource<T extends PanacheEntity> {
+
+    // format for date parsing
+    //TODO: Might need to change this
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+
 
     //Long for now, might use filter
     @GET

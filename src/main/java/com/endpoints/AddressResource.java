@@ -1,7 +1,7 @@
 package com.endpoints;
 
+import com.persistence.Address;
 import com.persistence.City;
-import com.persistence.Street;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
@@ -12,34 +12,34 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("streets")
-public class StreetResource extends PanacheEntity implements Resource<Street> {
+@Path("addresses")
+public class AddressResource extends PanacheEntity implements Resource<Address> {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
-        List<Street> streets = Street.listAll();
-        if(streets.isEmpty()) {
+        List<Address> addresses = Address.listAll();
+        if(addresses.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(streets).build();
+        return Response.ok(addresses).build();
     }
 
     @Override
     public Response find(Long filter) {
-        Street street = Street.findById(filter);
-        if (street == null) {
+        Address address = Address.findById(filter);
+        if (address == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(street).build();
+        return Response.ok(address).build();
     }
 
     @Transactional
     @Override
-    public Response create(Street street) {
+    public Response create(Address address) {
         try{
-            street.city = CityResource.findById(street.cityId);
-            street.persist();
+            address.city = CityResource.findById(address.cityId);
+            address.persist();
         } catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
@@ -48,24 +48,24 @@ public class StreetResource extends PanacheEntity implements Resource<Street> {
 
     @Transactional
     @Override
-    public Response update(Long id, Street street) {
-        Street updateStreet = Street.findById(id);
+    public Response update(Long id, Address address) {
+        Address updateAddress = Address.findById(id);
 
-        if(updateStreet == null) {
+        if(updateAddress == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Street not found.").build();
         }
 
         try{
-            updateStreet.name = street.name;
-            updateStreet.landRegistryNumber = street.landRegistryNumber;
-            updateStreet.houseNumber = street.houseNumber;
-            updateStreet.city = City.findById(street.cityId);
+            updateAddress.name = address.name;
+            updateAddress.landRegistryNumber = address.landRegistryNumber;
+            updateAddress.houseNumber = address.houseNumber;
+            updateAddress.city = City.findById(address.cityId);
 
-            updateStreet.persist();
+            updateAddress.persist();
         } catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
-        return Response.ok(updateStreet).build();
+        return Response.ok(updateAddress).build();
     }
 
 

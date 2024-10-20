@@ -11,6 +11,10 @@ public class Room extends PanacheEntity {
     @JsonbProperty("roomNumber")
     public int roomNumber;
 
+    @Column(name = "max_guests")
+    @JsonbProperty("maxGuests")
+    public int maxGuests;
+
     @Column(name = "type")
     @JsonbProperty("type")
     public String type;
