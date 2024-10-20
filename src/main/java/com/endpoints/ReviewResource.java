@@ -3,7 +3,6 @@ package com.endpoints;
 import com.persistence.AppUser;
 import com.persistence.Hotel;
 import com.persistence.Review;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -14,13 +13,13 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("reviews")
-public class ReviewResource extends PanacheEntity implements Resource<Review> {
+public class ReviewResource implements Resource<Review> {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
         List<Review> reviews = Review.listAll();
-        if(reviews.isEmpty()) {
+        if (reviews.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(reviews).build();
@@ -38,11 +37,11 @@ public class ReviewResource extends PanacheEntity implements Resource<Review> {
     @Transactional
     @Override
     public Response create(Review review) {
-        try{
-            review.hotel = HotelResource.findById(review.hotelId);
+        try {
+            review.hotel = Hotel.findById(review.hotelId);
             review.appUser = AppUser.findById(review.userId);
             review.persist();
-        } catch(Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
@@ -53,18 +52,18 @@ public class ReviewResource extends PanacheEntity implements Resource<Review> {
     public Response update(Long id, Review review) {
         Review updateReview = Review.findById(id);
 
-        if(updateReview == null) {
+        if (updateReview == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Review not found.").build();
         }
 
-        try{
+        try {
             updateReview.hotel = Hotel.findById(review.hotelId);
             updateReview.message = review.message;
             updateReview.appUser = AppUser.findById(review.userId);
             updateReview.rating = review.rating;
 
             updateReview.persist();
-        } catch(Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.ok(updateReview).build();

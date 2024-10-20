@@ -5,8 +5,8 @@ import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "street")
-public class Street extends PanacheEntity {
+@Table(name = "address")
+public class Address extends PanacheEntity {
     @Column(name = "name")
     @JsonbProperty("name")
     public String name;
