@@ -1,15 +1,12 @@
 package com.persistence;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.bind.annotation.JsonbProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "booking")
-public class Booking extends EntityBase {
+public class Booking extends PanacheEntity {
     @Column(name = "price_total")
     @JsonbProperty("priceTotal")
     public int priceTotal;
@@ -18,4 +15,8 @@ public class Booking extends EntityBase {
     @JoinColumn(name = "app_user_id")
     @JsonbProperty("appUserId")
     public AppUser appUser;
+
+    @Transient
+    @JsonbProperty("userId")
+    public Long userId;
 }
