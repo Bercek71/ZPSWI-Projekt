@@ -2,7 +2,6 @@ package com.endpoints;
 
 import com.persistence.Address;
 import com.persistence.City;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -19,7 +18,7 @@ public class AddressResource implements Resource<Address> {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
         List<Address> addresses = Address.listAll();
-        if(addresses.isEmpty()) {
+        if (addresses.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(addresses).build();
@@ -37,10 +36,10 @@ public class AddressResource implements Resource<Address> {
     @Transactional
     @Override
     public Response create(Address address) {
-        try{
+        try {
             address.city = City.findById(address.cityId);
             address.persist();
-        } catch(Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
@@ -51,18 +50,18 @@ public class AddressResource implements Resource<Address> {
     public Response update(Long id, Address address) {
         Address updateAddress = Address.findById(id);
 
-        if(updateAddress == null) {
+        if (updateAddress == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Street not found.").build();
         }
 
-        try{
+        try {
             updateAddress.name = address.name;
             updateAddress.landRegistryNumber = address.landRegistryNumber;
             updateAddress.houseNumber = address.houseNumber;
             updateAddress.city = City.findById(address.cityId);
 
             updateAddress.persist();
-        } catch(Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.ok(updateAddress).build();

@@ -4,7 +4,6 @@ import com.persistence.AppUser;
 import com.persistence.Booking;
 import com.persistence.Reservation;
 import com.persistence.Room;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -21,7 +20,7 @@ public class ReservationResource implements Resource<Reservation> {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
         List<Reservation> reservations = Reservation.listAll();
-        if(reservations.isEmpty()) {
+        if (reservations.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(reservations).build();
@@ -39,11 +38,11 @@ public class ReservationResource implements Resource<Reservation> {
     @Transactional
     @Override
     public Response create(Reservation reservation) {
-        try{
+        try {
             reservation.booking = Booking.findById(reservation.bookingId);
             reservation.room = Room.findById(reservation.roomId);
             reservation.persist();
-        } catch(Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
@@ -54,11 +53,11 @@ public class ReservationResource implements Resource<Reservation> {
     public Response update(Long id, Reservation reservation) {
         Reservation updateReservation = Reservation.findById(id);
 
-        if(updateReservation == null) {
+        if (updateReservation == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Reservation not found.").build();
         }
 
-        try{
+        try {
             updateReservation.startDate = reservation.startDate;
             updateReservation.endDate = reservation.endDate;
             updateReservation.room = Room.findById(reservation.roomId);
@@ -68,7 +67,7 @@ public class ReservationResource implements Resource<Reservation> {
             updateReservation.booking = Booking.findById(reservation.bookingId);
 
             updateReservation.persist();
-        } catch(Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.ok(updateReservation).build();

@@ -3,7 +3,6 @@ package com.endpoints;
 import com.persistence.Address;
 import com.persistence.Country;
 import com.persistence.Hotel;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -33,8 +32,7 @@ public class HotelResource implements Resource<Hotel> {
                 hotels = Hotel.listAll();
             } else if (checkIn == null || checkOut == null || city == null || guests == null) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("Missing parameters").build();
-            }
-            else {
+            } else {
                 LocalDate checkInDate = LocalDate.parse(checkIn, formatter);
                 LocalDate checkOutDate = LocalDate.parse(checkOut, formatter);
                 hotels = Hotel.findAvailableHotels(checkInDate, checkOutDate, guests, city);

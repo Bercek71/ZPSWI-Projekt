@@ -2,7 +2,6 @@ package com.endpoints;
 
 import com.persistence.Hotel;
 import com.persistence.Room;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -19,7 +18,7 @@ public class RoomResource implements Resource<Room> {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
         List<Room> rooms = Room.listAll();
-        if(rooms.isEmpty()) {
+        if (rooms.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(rooms).build();
@@ -37,10 +36,10 @@ public class RoomResource implements Resource<Room> {
     @Transactional
     @Override
     public Response create(Room room) {
-        try{
+        try {
             room.hotel = Hotel.findById(room.hotelId);
             room.persist();
-        } catch(Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
@@ -51,11 +50,11 @@ public class RoomResource implements Resource<Room> {
     public Response update(Long id, Room room) {
         Room updateRoom = Room.findById(id);
 
-        if(updateRoom == null) {
+        if (updateRoom == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Room not found.").build();
         }
 
-        try{
+        try {
             updateRoom.roomNumber = room.roomNumber;
             updateRoom.type = room.type;
             updateRoom.pricePerNight = room.pricePerNight;
@@ -63,7 +62,7 @@ public class RoomResource implements Resource<Room> {
             updateRoom.hotel = Hotel.findById(room.hotelId);
 
             updateRoom.persist();
-        } catch(Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.ok(updateRoom).build();

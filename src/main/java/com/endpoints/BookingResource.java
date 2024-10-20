@@ -2,7 +2,6 @@ package com.endpoints;
 
 import com.persistence.AppUser;
 import com.persistence.Booking;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -18,11 +17,11 @@ public class BookingResource implements Resource<Booking> {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
-       List<Booking> bookings = Booking.listAll();
-       if(bookings.isEmpty()) {
-           return Response.status(Response.Status.NOT_FOUND).build();
-       }
-       return Response.ok(bookings).build();
+        List<Booking> bookings = Booking.listAll();
+        if (bookings.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(bookings).build();
     }
 
     @Override
@@ -36,10 +35,10 @@ public class BookingResource implements Resource<Booking> {
 
     @Override
     public Response create(Booking booking) {
-        try{
+        try {
             booking.appUser = AppUser.findById(booking.userId);
             booking.persist();
-        } catch(Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.status(Response.Status.CREATED).build();
@@ -51,16 +50,16 @@ public class BookingResource implements Resource<Booking> {
 
         Booking updateBooking = Booking.findById(id);
 
-        if(updateBooking == null) {
+        if (updateBooking == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Booking not found.").build();
         }
 
-        try{
+        try {
             updateBooking.appUser = AppUser.findById(booking.userId);
             updateBooking.priceTotal = booking.priceTotal;
             updateBooking.persist();
 
-        } catch(Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
         return Response.ok(updateBooking).build();
