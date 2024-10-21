@@ -64,7 +64,7 @@ public class HotelResourceTest {
 	@Test
 	void createWithValidBodyAndValidCountryIdShouldReturnCreated() {
 		Hotel request = new Hotel();
-		request.countryId = 1L;
+		request.addressId = 1L;
 		request.name = "TestHotel";
 
 		given()
@@ -80,7 +80,7 @@ public class HotelResourceTest {
 	@Test
 	void createWithValidBodyAndNonExistingCountryIdShouldReturnInternalServerError() {
 		Hotel request = new Hotel();
-		request.countryId = Long.MAX_VALUE;
+		request.addressId = Long.MAX_VALUE;
 		request.name = "TestHotel";
 
 		given()
@@ -107,7 +107,7 @@ public class HotelResourceTest {
 	@Test
 	void updateWithExistingIdValidBodyAndValidCountryIdShouldReturnOK() {
 		Hotel request = new Hotel();
-		request.countryId = 1L;
+		request.addressId = 1L;
 		request.name = "TestHotelRename";
 
 		given()
@@ -124,7 +124,7 @@ public class HotelResourceTest {
 	@Test
 	void updateWithExistingIdAndValidBodyAndNonExistingCountryIdShouldReturnInternalServerError() {
 		Hotel request = new Hotel();
-		request.countryId = Long.MAX_VALUE;
+		request.addressId = Long.MAX_VALUE;
 		request.name = "TestHotelRename";
 
 		given()
@@ -141,7 +141,7 @@ public class HotelResourceTest {
 	@Test
 	void updateWithNonExistingIdAndValidBodyShouldReturnNotFound() {
 		Hotel request = new Hotel();
-		request.countryId = 1L;
+		request.addressId = 1L;
 		request.name = "TestHotelRename";
 
 		given()

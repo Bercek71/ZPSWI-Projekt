@@ -127,6 +127,14 @@ insert into booking(id, price_total, app_user_id) values (2, 200, 1);
 insert into Reservation(id, start_date, end_date, room_id, status, price, paid_at, booking_id) values (1, '2020-01-01', '2020-01-10', 1, 'CONFIRMED', 100, '2020-01-01', 1);
 insert into Reservation(id, start_date, end_date, room_id, status, price, paid_at, booking_id) values (2, '2020-01-01', '2020-01-10', 2, 'CONFIRMED', 200, '2020-01-01', 1);
 
+insert into Amenity(id, wifi, single_bed, double_bed, bunk_bed, king_bed, minibar, tv, room_service, balcony, bathroom, board) values(1, true, 2, 1, 0, 0, true, true, false, true, 'CLASSIC', 'FULL');
+insert into Amenity(id, wifi, single_bed, double_bed, bunk_bed, king_bed, minibar, tv, room_service, balcony, bathroom, board) values(2, true, 0, 0, 0, 1, true, true, true, true, 'LUXURY', 'FULL');
+
+insert into Room_amenity(amenity_id, room_id) values(1, 1);
+insert into Room_amenity(amenity_id, room_id) values(2, 4);
+insert into Room_amenity(amenity_id, room_id) values(1, 3);
+
+
 ALTER SEQUENCE app_user_seq RESTART WITH 3;
 ALTER SEQUENCE hotel_seq RESTART WITH 24;
 ALTER SEQUENCE room_seq RESTART WITH 61;
