@@ -134,7 +134,7 @@ public class BookingResourceTest {
     }
 
     @Test
-    void updateWithNonExistingIdAndValidBodyAndValidUserIdShouldReturnNotFound() {
+    void updateWithNonExistingIdAndValidBodyShouldReturnNotFound() {
         Booking request = new Booking();
         request.priceTotal = 100;
         request.userId = Long.MAX_VALUE;
