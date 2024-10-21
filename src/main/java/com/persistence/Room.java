@@ -4,6 +4,9 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "room")
 public class Room extends PanacheEntity {
@@ -34,4 +37,12 @@ public class Room extends PanacheEntity {
     @Transient
     @JsonbProperty("hotelId")
     public Long hotelId;
+
+    @ManyToMany
+    @JoinTable(
+            name = "room_amenity",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "amenity_id")
+    )
+    public Set<Amenity> amenities = new HashSet<>();
 }
