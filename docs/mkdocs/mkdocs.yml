@@ -18,11 +18,6 @@ theme:
       icon: material/toggle-switch
       name: Switch to dark mode
 
-markdown_extensions:
-  - admonition
-  - codehilite
-  - toc:
-      permalink: true
 
 nav:
   - Home: index.md
