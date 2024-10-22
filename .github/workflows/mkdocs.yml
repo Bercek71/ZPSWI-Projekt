@@ -5,6 +5,9 @@ on:
     branches:
       - main  # Change this to your default branch name if it's not 'main'
 
+permissions:
+  contents: write  # Permission to write to the repository
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
