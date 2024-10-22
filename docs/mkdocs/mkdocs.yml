@@ -1,0 +1,40 @@
+site_name: Hotel Reservation system
+theme:
+  name: material
+  palette:
+    scheme: dark  # Set the theme to dark mode
+    primary: indigo  # Change the primary color if desired
+    accent: pink  # Change the accent color if desired
+  features:
+    - navigation.expand
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - search.share
+    - palette.toggle  # Enables a toggle for dark/light mode
+  palette:
+    scheme: default
+    toggle:
+      icon: material/toggle-switch
+      name: Switch to dark mode
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Data Model: data_model.md
+  - API Documentation: api.md
+
+plugins:
+  - search
+  - mermaid2
+
+repo_url: https://github.com/Bercek71/ZPSWI-Projekt  # Replace with your repository URL
+repo_name: ZPSWI_Projekt  # Name of the repo
+
+version:
+  branch: main  # Adjust according to your main branch name
