@@ -1,0 +1,88 @@
+user [icon: user, color: blue] {
+  id int pk
+  firstName string
+  lastName string
+  password string
+  email email unique
+  role
+}
+
+booking [icon: bookmark, color: green] {
+  id int pk
+  price_total int
+}
+
+status [icon: check, color: green] {
+  id int pk
+  name string
+}
+
+role [icon: user-secret, color: blue] {
+  id int pk
+  name string
+}
+
+hotel [icon: home, color: green] {
+  id int pk
+  name string
+  country 
+}
+
+street [icon: form, color: yellow] {
+  id int pk
+  city
+  name string
+  land_registry_number int
+  house_number int
+}
+
+city [icon: city, color: yellow] {
+  id int pk
+  name string
+  zip_code int
+}
+
+country [icon: flag, color: yellow] {
+  id int pk
+  name string
+  iso_code string
+}
+
+room [icon: bed, color: green] {
+  id int pk
+  room_number int 
+  type string
+  price_per_night int
+  is_available
+}
+
+reservation [color: green] {
+  start_date date
+  end_date date
+  room
+  status
+  price int
+  paid_at datetime
+}
+
+review [icon: message-circle, color: purple] {
+  user
+  hotel
+  message string [2000]
+  rating int
+}
+
+
+
+user.role > role.id
+user.id < booking.user
+room.hotel > hotel.id
+reservation.status > status.id
+booking.id < reservation.booking
+room.id < reservation.room
+hotel.id <> user.id
+country.id < city.country
+country.id < hotel.country
+city.id < street.city
+hotel.id < review.hotel 
+review.user > user.id
