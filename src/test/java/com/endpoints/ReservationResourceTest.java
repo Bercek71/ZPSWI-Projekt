@@ -1,11 +1,7 @@
 package com.endpoints;
 
-import com.persistence.Hotel;
-import com.persistence.Reservation;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
-import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.json.bind.JsonbBuilder;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
@@ -62,14 +58,25 @@ public class ReservationResourceTest {
 			)));
 	}
 
-
 	@Test
-	void createWithInvalidBodyShouldReturnBadRequest() {
+	void createShouldReturnNotImplemented() {
 		given()
 			.header("Content-Type", "application/json")
 			.body("")
 		.when()
 			.post()
+		.then()
+			.statusCode(is(Response.Status.NOT_IMPLEMENTED.getStatusCode()));
+	}
+
+	@Test
+	void updateWithEmptyBodyShouldReturnBadRequest() {
+		given()
+			.header("Content-Type", "application/json")
+			.pathParam("id", 1)
+			.body("")
+		.when()
+			.put("{id}")
 		.then()
 			.statusCode(is(Response.Status.BAD_REQUEST.getStatusCode()));
 	}
