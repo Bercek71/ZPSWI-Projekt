@@ -1,10 +1,13 @@
 package com.endpoints;
 
+import com.persistence.Amenity;
 import com.persistence.Hotel;
 import com.persistence.Room;
+import com.persistence.RoomAmenity;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -13,6 +16,18 @@ import java.util.List;
 
 @Path("rooms")
 public class RoomResource implements Resource<Room> {
+
+    @GET
+    @Path("roomAmenities/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAmenities(@PathParam("id") Long roomId) {
+        List<Amenity> amenities = RoomAmenity.findAllAmenitiesForRoom(roomId);
+
+        if(amenities == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("No amenities found").build();
+        }
+        return Response.ok(amenities).build();
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
