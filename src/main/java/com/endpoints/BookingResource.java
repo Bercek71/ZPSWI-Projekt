@@ -36,6 +36,7 @@ public class BookingResource implements Resource<Booking> {
     @Override
     public Response create(Booking booking) {
         try {
+
             booking.appUser = AppUser.findById(booking.userId);
             booking.persist();
         } catch (Exception e) {
@@ -49,6 +50,10 @@ public class BookingResource implements Resource<Booking> {
     public Response update(Long id, Booking booking) {
 
         Booking updateBooking = Booking.findById(id);
+
+        if(booking.userId == null){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Wrong body").build();
+        }
 
         if (updateBooking == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Booking not found.").build();

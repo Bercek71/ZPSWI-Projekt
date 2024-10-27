@@ -39,17 +39,7 @@ public class AmenityResource implements Resource<Amenity>{
             }
 
             try {
-                updateAmenity.wifi = entity.wifi;
-                updateAmenity.singleBed = entity.singleBed;
-                updateAmenity.doubleBed = entity.doubleBed;
-                updateAmenity.bunkBed = entity.bunkBed;
-                updateAmenity.kingBed = entity.kingBed;
-                updateAmenity.minibar = entity.minibar;
-                updateAmenity.tv = entity.tv;
-                updateAmenity.roomService = entity.roomService;
-                updateAmenity.balcony = entity.balcony;
-                updateAmenity.bathroom = entity.bathroom;
-                updateAmenity.board = entity.board;
+                updateAmenity.name = entity.name;
 
                 updateAmenity.persist();
             } catch (Exception e) {
