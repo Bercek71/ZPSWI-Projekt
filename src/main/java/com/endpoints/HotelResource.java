@@ -59,12 +59,15 @@ public class HotelResource implements Resource<Hotel> {
     @Override
     public Response create(Hotel hotel) {
         try {
-            hotel.address = Address.findById(hotel.address.id);
+            if(hotel == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Missing parameters").build();
+            }
+            hotel.address = Address.findById(hotel.addressId);
             hotel.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED).entity(hotel).build();
     }
 
     @Transactional
@@ -77,14 +80,14 @@ public class HotelResource implements Resource<Hotel> {
         }
 
         try {
-            updateHotel.address = Country.findById(hotel.addressId);
+            updateHotel.address = Address.findById(hotel.addressId);
             updateHotel.name = hotel.name;
             updateHotel.persist();
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
-        return Response.ok(updateHotel).build();
+        return Response.ok(updateHotel).entity(updateHotel).build();
     }
 
     @Transactional

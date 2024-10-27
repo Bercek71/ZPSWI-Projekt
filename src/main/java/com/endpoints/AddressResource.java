@@ -50,6 +50,10 @@ public class AddressResource implements Resource<Address> {
     public Response update(Long id, Address address) {
         Address updateAddress = Address.findById(id);
 
+        if(address.cityId == null){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Wrong body").build();
+        }
+
         if (updateAddress == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Street not found.").build();
         }
