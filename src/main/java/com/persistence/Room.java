@@ -37,12 +37,4 @@ public class Room extends PanacheEntity {
     @Transient
     @JsonbProperty("hotelId")
     public Long hotelId;
-
-    @ManyToMany
-    @JoinTable(
-            name = "room_amenity",
-            joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn(name = "amenity_id")
-    )
-    public Set<Amenity> amenities = new HashSet<>();
 }
