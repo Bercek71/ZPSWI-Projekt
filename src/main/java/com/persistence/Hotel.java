@@ -37,7 +37,7 @@ public class Hotel extends PanacheEntity {
     public String name;
 
     @ManyToOne
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", nullable = false)
     public Address address;
 
     @Transient
