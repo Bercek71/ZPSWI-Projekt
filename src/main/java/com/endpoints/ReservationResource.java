@@ -39,6 +39,9 @@ public class ReservationResource implements Resource<Reservation> {
     @Override
     public Response create(Reservation reservation) {
         try {
+            if(reservation == null){
+                return Response.status(Response.Status.BAD_REQUEST).entity("Wrong body").build();
+            }
             reservation.booking = Booking.findById(reservation.bookingId);
             reservation.room = Room.findById(reservation.roomId);
             reservation.persist();
