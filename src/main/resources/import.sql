@@ -124,16 +124,29 @@ insert into room(id, room_number, price_per_night, type, is_available, hotel_id,
 insert into booking(id, price_total, app_user_id) values (1, 100, 1);
 insert into booking(id, price_total, app_user_id) values (2, 200, 1);
 
-insert into Reservation(id, start_date, end_date, room_id, status, price, paid_at, booking_id) values (1, '2020-01-01', '2020-01-10', 1, 'CONFIRMED', 100, '2020-01-01', 1);
-insert into Reservation(id, start_date, end_date, room_id, status, price, paid_at, booking_id) values (2, '2020-01-01', '2020-01-10', 2, 'CONFIRMED', 200, '2020-01-01', 1);
+insert into reservation(id, start_date, end_date, room_id, status, price, paid_at, booking_id) values (1, '2020-01-01', '2020-01-10', 1, 'CONFIRMED', 100, '2020-01-01', 1);
+insert into reservation(id, start_date, end_date, room_id, status, price, paid_at, booking_id) values (2, '2020-01-01', '2020-01-10', 2, 'CONFIRMED', 200, '2020-01-01', 1);
 
-insert into Amenity(id, wifi, single_bed, double_bed, bunk_bed, king_bed, minibar, tv, room_service, balcony, bathroom, board) values(1, true, 2, 1, 0, 0, true, true, false, true, 'CLASSIC', 'FULL');
-insert into Amenity(id, wifi, single_bed, double_bed, bunk_bed, king_bed, minibar, tv, room_service, balcony, bathroom, board) values(2, true, 0, 0, 0, 1, true, true, true, true, 'LUXURY', 'FULL');
+insert into amenity(id, name) values(1,  'wifi');
+insert into amenity(id, name) values(2, 'minibar');
+insert into amenity(id, name) values(3,  'tv');
+insert into amenity(id, name) values(4, 'room service');
+insert into amenity(id, name) values(5,  'fridge');
+insert into amenity(id, name) values(6, 'single bed');
+insert into amenity(id, name) values(7,  'double bed');
+insert into amenity(id, name) values(8, 'bunk bed');
+insert into amenity(id, name) values(9, 'king bed');
+insert into amenity(id, name) values(10, 'bathroom classic');
+insert into amenity(id, name) values(11, 'bathroom shared');
+insert into amenity(id, name) values(12, 'bathroom luxury');
+insert into amenity(id, name) values(13, 'balcony');
+insert into amenity(id, name) values(14, 'board half');
+insert into amenity(id, name) values(15, 'board full');
+insert into amenity(id, name) values(16, 'board breakfast');
 
-insert into Room_amenity(amenity_id, room_id) values(1, 1);
-insert into Room_amenity(amenity_id, room_id) values(2, 4);
-insert into Room_amenity(amenity_id, room_id) values(1, 3);
-
+insert into room_amenity(id, amenity_id, room_id, counter) values(1,1, 1, 0);
+insert into room_amenity(id, amenity_id, room_id, counter) values(2,2, 4, 0);
+insert into room_amenity(id, amenity_id, room_id, counter) values(3,1, 3, 1);
 
 ALTER SEQUENCE app_user_seq RESTART WITH 3;
 ALTER SEQUENCE hotel_seq RESTART WITH 24;
@@ -142,4 +155,5 @@ ALTER SEQUENCE city_seq RESTART WITH 28;
 ALTER SEQUENCE address_seq RESTART WITH 10;
 ALTER SEQUENCE booking_seq RESTART WITH 3;
 ALTER SEQUENCE reservation_seq RESTART WITH 3;
-ALTER SEQUENCE app_user_seq RESTART WITH 3;
+ALTER SEQUENCE amenity_seq RESTART WITH 17;
+ALTER SEQUENCE room_amenity_seq RESTART WITH 4;
