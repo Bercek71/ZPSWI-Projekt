@@ -3,11 +3,16 @@ package com.endpoints;
 import com.persistence.Booking;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObjectBuilder;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Random;
 
 import static io.restassured.RestAssured.given;
@@ -61,14 +66,20 @@ public class BookingResourceTest {
     }
 
     @Test
-    void createWithValidBodyAndValidUserIdShouldReturnCreated() {
-        Booking request = new Booking();
-        request.priceTotal = 100;
-        request.userId = 1L;
+    void createWithValidBodyShouldReturnCreated() {
+        JsonObjectBuilder reservation = Json.createObjectBuilder()
+            .add("startDate", LocalDate.now().toString())
+            .add("endDate", LocalDate.now().plusDays(1).toString())
+            .add("roomId", 1);
+        JsonArrayBuilder reservations = Json.createArrayBuilder()
+            .add(reservation);
+        JsonObjectBuilder booking = Json.createObjectBuilder()
+            .add("userId", 1)
+            .add("reservations", reservations);
 
         given()
             .header("Content-Type", "application/json")
-            .body(JsonbBuilder.create().toJson(request))
+            .body(booking.build().toString())
         .when()
             .post()
         .then()
@@ -77,21 +88,28 @@ public class BookingResourceTest {
 
     @Test
     void createWithValidBodyAndNonExistingUserIdShouldReturnInternalServerError() {
-        Booking request = new Booking();
-        request.priceTotal = 100;
-        request.userId = Long.MAX_VALUE;
+        LocalDate now = LocalDate.now();
+        JsonObjectBuilder reservation = Json.createObjectBuilder()
+            .add("startDate", now.toString())
+            .add("endDate", now.plusDays(1).toString())
+            .add("roomId", 1);
+        JsonArrayBuilder reservations = Json.createArrayBuilder()
+            .add(reservation);
+        JsonObjectBuilder booking = Json.createObjectBuilder()
+            .add("userId", Long.MAX_VALUE)
+            .add("reservations", reservations);
 
         given()
             .header("Content-Type", "application/json")
-        .body(JsonbBuilder.create().toJson(request))
-            .when()
-        .post()
-            .then()
-        .statusCode(is(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()));
+            .body(booking.build().toString())
+        .when()
+            .post()
+        .then()
+            .statusCode(is(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()));
     }
 
     @Test
-    void createWithInvalidBodyShouldReturnBadRequest() {
+    void createWithEmptyBodyShouldReturnBadRequest() {
         given()
             .header("Content-Type", "application/json")
             .body("")
@@ -102,7 +120,42 @@ public class BookingResourceTest {
     }
 
     @Test
-    void updateWithExistingIdValidBodyAndValidUserIdShouldReturnOK() {
+    void createWithStartDateLaterThanEndDateShouldReturnBadRequest() {
+        LocalDate now = LocalDate.now();
+        JsonObjectBuilder reservation = Json.createObjectBuilder()
+            .add("startDate", now.plusDays(1).toString())
+            .add("endDate", now.toString());
+        JsonArrayBuilder reservations = Json.createArrayBuilder()
+            .add(reservation);
+        JsonObjectBuilder booking = Json.createObjectBuilder()
+            .add("userId", 1)
+            .add("reservations", reservations);
+
+        given()
+            .header("Content-Type", "application/json")
+            .body(booking.build().toString())
+        .when()
+            .post()
+        .then()
+            .statusCode(is(Response.Status.BAD_REQUEST.getStatusCode()));
+    }
+
+    @Test
+    void createWithEmptyReservationsShouldReturnBadRequest() {
+        JsonObjectBuilder booking = Json.createObjectBuilder()
+            .add("userId", 1)
+            .add("reservations", Json.createArrayBuilder());
+
+        given()
+            .header("Content-Type", "application/json")
+            .body(booking.build().toString())
+        .when()
+            .post()
+        .then()
+            .statusCode(is(Response.Status.BAD_REQUEST.getStatusCode()));
+    }
+    @Test
+    void updateShouldReturnNotImplemented() {
         Booking request = new Booking();
         request.priceTotal = 100;
         request.userId = 1L;
@@ -114,39 +167,6 @@ public class BookingResourceTest {
         .when()
             .put("{id}")
         .then()
-            .statusCode(is(Response.Status.OK.getStatusCode()));
+            .statusCode(is(Response.Status.NOT_IMPLEMENTED.getStatusCode()));
     }
-
-    @Test
-    void updateWithExistingIdAndValidBodyAndNonExistingUserIdShouldReturnInternalServerError() {
-        Booking request = new Booking();
-        request.priceTotal = 100;
-        request.userId = Long.MAX_VALUE;
-
-        given()
-            .header("Content-Type", "application/json")
-            .body(JsonbBuilder.create().toJson(request))
-            .pathParam("id", 1)
-        .when()
-            .put("{id}")
-        .then()
-            .statusCode(is(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()));
-    }
-
-    @Test
-    void updateWithNonExistingIdAndValidBodyShouldReturnNotFound() {
-        Booking request = new Booking();
-        request.priceTotal = 100;
-        request.userId = Long.MAX_VALUE;
-
-        given()
-            .header("Content-Type", "application/json")
-            .body(JsonbBuilder.create().toJson(request))
-            .pathParam("id", Long.MAX_VALUE)
-        .when()
-            .put("{id}")
-        .then()
-            .statusCode(is(Response.Status.NOT_FOUND.getStatusCode()));
-    }
-
 }
