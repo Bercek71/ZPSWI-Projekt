@@ -1,4 +1,4 @@
-package com.endpoints;
+package com.resources;
 
 import com.persistence.Amenity;
 import com.persistence.Hotel;

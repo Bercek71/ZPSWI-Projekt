@@ -1,4 +1,4 @@
-package com.endpoints;
+package com.resources;
 
 import com.persistence.Booking;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Random;
 
 import static io.restassured.RestAssured.given;

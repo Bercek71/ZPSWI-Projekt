@@ -1,11 +1,9 @@
-package com.endpoints;
+package com.resources;
 
-import com.persistence.*;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.json.Json;
 import jakarta.json.JsonObjectBuilder;
-import jakarta.json.bind.JsonbBuilder;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 

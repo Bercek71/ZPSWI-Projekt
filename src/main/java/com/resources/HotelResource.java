@@ -1,7 +1,6 @@
-package com.endpoints;
+package com.resources;
 
 import com.persistence.Address;
-import com.persistence.Country;
 import com.persistence.Hotel;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
@@ -59,7 +58,7 @@ public class HotelResource implements Resource<Hotel> {
     @Override
     public Response create(Hotel hotel) {
         try {
-            if(hotel == null) {
+            if(hotel.name == null || hotel.addressId == null) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("Missing parameters").build();
             }
             hotel.address = Address.findById(hotel.addressId);

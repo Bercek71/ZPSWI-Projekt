@@ -1,4 +1,4 @@
-package com.endpoints;
+package com.resources;
 
 import com.persistence.AppUser;
 import com.persistence.Booking;
@@ -36,7 +36,9 @@ public class BookingResource implements Resource<Booking> {
     @Override
     public Response create(Booking booking) {
         try {
-
+            if(booking == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Wrong body").build();
+            }
             booking.appUser = AppUser.findById(booking.userId);
             booking.persist();
         } catch (Exception e) {

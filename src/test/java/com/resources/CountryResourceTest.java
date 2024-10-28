@@ -1,4 +1,4 @@
-package com.endpoints;
+package com.resources;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -13,8 +13,8 @@ import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
-@TestHTTPEndpoint(AmenityResource.class)
-public class AmenityResourceTest {
+@TestHTTPEndpoint(CountryResource.class)
+public class CountryResourceTest {
 
 	@Test
 	void findAllShouldAlwaysReturnListAndOK() {
@@ -29,9 +29,9 @@ public class AmenityResourceTest {
 	void findWithFloatParameterShouldReturnNotFound() {
 		given()
 			.pathParam("id", 1.23)
-		.when()
+			.when()
 			.get("{id}")
-		.then()
+			.then()
 			.statusCode(Response.Status.NOT_FOUND.getStatusCode());
 	}
 

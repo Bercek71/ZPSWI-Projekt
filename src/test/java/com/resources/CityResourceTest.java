@@ -1,4 +1,4 @@
-package com.endpoints;
+package com.resources;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
