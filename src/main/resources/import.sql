@@ -144,9 +144,9 @@ insert into amenity(id, name) values(14, 'board half');
 insert into amenity(id, name) values(15, 'board full');
 insert into amenity(id, name) values(16, 'board breakfast');
 
-insert into room_amenity(id, amenity_id, room_id, counter) values(1,1, 1, 0);
-insert into room_amenity(id, amenity_id, room_id, counter) values(2,2, 4, 0);
-insert into room_amenity(id, amenity_id, room_id, counter) values(3,1, 3, 1);
+insert into room_amenity(id, amenity_id, room_id, value) values(1,1, 1, 0);
+insert into room_amenity(id, amenity_id, room_id, value) values(2,2, 3, 0);
+insert into room_amenity(id, amenity_id, room_id, value) values(3,1, 3, 1);
 
 ALTER SEQUENCE app_user_seq RESTART WITH 3;
 ALTER SEQUENCE hotel_seq RESTART WITH 24;
