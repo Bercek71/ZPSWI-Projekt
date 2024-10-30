@@ -1,9 +1,10 @@
 package com.endpoints;
 
-import com.persistence.Booking;
-import com.persistence.Hotel;
+import com.persistence.*;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.json.Json;
+import jakarta.json.JsonObjectBuilder;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
@@ -52,9 +53,9 @@ public class HotelResourceTest {
 	void findWithValidParameterShouldReturnOKOrNotFound() {
 		given()
 			.pathParam("id", new Random().nextLong())
-			.when()
+		.when()
 			.get("{id}")
-			.then()
+		.then()
 			.statusCode(is(in(Arrays.asList(
 				Response.Status.OK.getStatusCode(),
 				Response.Status.NOT_FOUND.getStatusCode())
@@ -62,15 +63,26 @@ public class HotelResourceTest {
 	}
 
 	@Test
-	void createWithValidBodyAndValidCountryIdShouldReturnCreated() {
-		Hotel request = new Hotel();
-		request.addressId = 1L;
-		request.name = "TestHotel";
+	void createWithValidBodyShouldReturnCreated() {
+		JsonObjectBuilder country = Json.createObjectBuilder()
+            .add("isoCode", "USA")
+			.add("name", "United States");
+		JsonObjectBuilder city = Json.createObjectBuilder()
+			.add("country", country)
+			.add("name", "San Francisco")
+			.add("zipCode", 12345);
+		JsonObjectBuilder address = Json.createObjectBuilder()
+			.add("city", city)
+			.add("name", "Golden Eye's")
+			.add("houseNumber", 12345)
+			.add("landRegistryNumber", 12345);
+		JsonObjectBuilder hotel = Json.createObjectBuilder()
+			.add("address", address)
+			.add("name", "TestHotel");
 
 		given()
 			.header("Content-Type", "application/json")
-			.body(JsonbBuilder.create()
-			                  .toJson(request))
+			.body(hotel.build().toString())
 		.when()
 			.post()
 		.then()
@@ -78,23 +90,7 @@ public class HotelResourceTest {
 	}
 
 	@Test
-	void createWithValidBodyAndNonExistingCountryIdShouldReturnInternalServerError() {
-		Hotel request = new Hotel();
-		request.addressId = Long.MAX_VALUE;
-		request.name = "TestHotel";
-
-		given()
-			.header("Content-Type", "application/json")
-			.body(JsonbBuilder.create()
-			                  .toJson(request))
-		.when()
-			.post()
-		.then()
-			.statusCode(is(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()));
-	}
-
-	@Test
-	void createWithInvalidBodyShouldReturnBadRequest() {
+	void createWithEmptyBodyShouldReturnBadRequest() {
 		given()
 			.header("Content-Type", "application/json")
 			.body("")
@@ -105,15 +101,13 @@ public class HotelResourceTest {
 	}
 
 	@Test
-	void updateWithExistingIdValidBodyAndValidCountryIdShouldReturnOK() {
-		Hotel request = new Hotel();
-		request.addressId = 1L;
-		request.name = "TestHotelRename";
+	void updateWithValidBodyShouldReturnOK() {
+		JsonObjectBuilder hotel = Json.createObjectBuilder()
+            .add("name", "TestHotelRename");
 
 		given()
 			.header("Content-Type", "application/json")
-			.body(JsonbBuilder.create()
-			                  .toJson(request))
+			.body(hotel.build().toString())
 			.pathParam("id", 1)
 		.when()
 			.put("{id}")
@@ -122,32 +116,13 @@ public class HotelResourceTest {
 	}
 
 	@Test
-	void updateWithExistingIdAndValidBodyAndNonExistingCountryIdShouldReturnInternalServerError() {
-		Hotel request = new Hotel();
-		request.addressId = Long.MAX_VALUE;
-		request.name = "TestHotelRename";
-
-		given()
-			.header("Content-Type", "application/json")
-			.body(JsonbBuilder.create()
-			                  .toJson(request))
-			.pathParam("id", 1)
-		.when()
-			.put("{id}")
-		.then()
-			.statusCode(is(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()));
-	}
-
-	@Test
 	void updateWithNonExistingIdAndValidBodyShouldReturnNotFound() {
-		Hotel request = new Hotel();
-		request.addressId = 1L;
-		request.name = "TestHotelRename";
+		JsonObjectBuilder hotel = Json.createObjectBuilder()
+			.add("name", "TestHotelRename");
 
 		given()
 			.header("Content-Type", "application/json")
-			.body(JsonbBuilder.create()
-			                  .toJson(request))
+			.body(hotel.build().toString())
 			.pathParam("id", Long.MAX_VALUE)
 		.when()
 			.put("{id}")
