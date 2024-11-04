@@ -1,6 +1,8 @@
 package com.resources;
 
 import com.persistence.Address;
+import com.persistence.City;
+import com.persistence.Country;
 import com.persistence.Hotel;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
@@ -58,13 +60,32 @@ public class HotelResource implements Resource<Hotel> {
     @Override
     public Response create(Hotel hotel) {
         try {
-            if(hotel.name == null || hotel.addressId == null) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Missing parameters").build();
+            if(hotel == null){
+                return Response.status(Response.Status.BAD_REQUEST).entity("Wrong body").build();
             }
-            hotel.address = Address.findById(hotel.addressId);
+
+            Country existingCountry = Country.find("isoCode", hotel.address.city.country.isoCode).firstResult();
+            if (existingCountry == null) {
+                existingCountry = hotel.address.city.country;
+                existingCountry.persist();
+            }
+
+            City existingCity = City.find("name = ?1 AND country.id = ?2", hotel.address.city.name, existingCountry.id).firstResult();
+            if (existingCity == null) {
+                existingCity = hotel.address.city;
+                existingCity.country = existingCountry;
+                existingCity.persist();
+            }
+
+            Address existingAddress = Address.find("name = ?1 AND houseNumber = ?2 AND landRegistryNumber = ?3", hotel.address.name, hotel.address.houseNumber, hotel.address.landRegistryNumber).firstResult();
+            if(existingAddress == null){
+                existingAddress = hotel.address;
+                existingAddress.city = existingCity;
+                existingAddress.persist();
+            }
             hotel.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
         return Response.status(Response.Status.CREATED).entity(hotel).build();
     }
@@ -77,16 +98,14 @@ public class HotelResource implements Resource<Hotel> {
         if (updateHotel == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Hotel not found.").build();
         }
-
         try {
-            updateHotel.address = Address.findById(hotel.addressId);
             updateHotel.name = hotel.name;
             updateHotel.persist();
 
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
-        return Response.ok(updateHotel).entity(updateHotel).build();
+        return Response.ok(updateHotel).build();
     }
 
     @Transactional
@@ -101,7 +120,7 @@ public class HotelResource implements Resource<Hotel> {
         try {
             hotel.delete();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
         return Response.status(Response.Status.OK).entity(hotel).build();
     }

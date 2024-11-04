@@ -2,6 +2,7 @@ package com.resources;
 
 import com.persistence.AppUser;
 import com.persistence.Booking;
+import com.persistence.Reservation;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -34,13 +35,31 @@ public class BookingResource implements Resource<Booking> {
     }
 
     @Override
+    @Transactional
     public Response create(Booking booking) {
         try {
             if(booking == null) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("Wrong body").build();
             }
+            if(booking.reservations.isEmpty()) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("No reservations").build();
+            }
+
             booking.appUser = AppUser.findById(booking.userId);
+            if(booking.appUser == null) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("UserId doesn't exist.").build();
+            }
             booking.persist();
+
+            for (Reservation reservation : booking.reservations) {
+                if (reservation != null) {
+                    if(reservation.startDate.isAfter(reservation.endDate)){
+                        return Response.status(Response.Status.BAD_REQUEST).entity("Start date later than end date.").build();
+                    }
+                    reservation.booking = booking;
+                    reservation.persist();
+                }
+            }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
@@ -50,26 +69,7 @@ public class BookingResource implements Resource<Booking> {
     @Transactional
     @Override
     public Response update(Long id, Booking booking) {
-
-        Booking updateBooking = Booking.findById(id);
-
-        if(booking.userId == null){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Wrong body").build();
-        }
-
-        if (updateBooking == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Booking not found.").build();
-        }
-
-        try {
-            updateBooking.appUser = AppUser.findById(booking.userId);
-            updateBooking.priceTotal = booking.priceTotal;
-            updateBooking.persist();
-
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
-        }
-        return Response.ok(updateBooking).build();
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
     @Transactional

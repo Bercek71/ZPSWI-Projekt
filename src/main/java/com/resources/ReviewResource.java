@@ -19,9 +19,6 @@ public class ReviewResource implements Resource<Review> {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
         List<Review> reviews = Review.listAll();
-        if (reviews.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
         return Response.ok(reviews).build();
     }
 

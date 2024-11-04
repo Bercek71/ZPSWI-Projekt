@@ -37,7 +37,6 @@ public class AddressResource implements Resource<Address> {
     @Override
     public Response create(Address address) {
         try {
-            address.city = City.findById(address.cityId);
             address.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
@@ -50,7 +49,7 @@ public class AddressResource implements Resource<Address> {
     public Response update(Long id, Address address) {
         Address updateAddress = Address.findById(id);
 
-        if(address.cityId == null){
+        if(address.city == null){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Wrong body").build();
         }
 
@@ -62,7 +61,7 @@ public class AddressResource implements Resource<Address> {
             updateAddress.name = address.name;
             updateAddress.landRegistryNumber = address.landRegistryNumber;
             updateAddress.houseNumber = address.houseNumber;
-            updateAddress.city = City.findById(address.cityId);
+            updateAddress.city = address.city;
 
             updateAddress.persist();
         } catch (Exception e) {
