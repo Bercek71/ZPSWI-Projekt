@@ -6,6 +6,9 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.mindrot.jbcrypt.BCrypt;
+import io.smallrye.jwt.build.Jwt;
+
+import java.time.Instant;
 
 @Path("")
 public class Authorization {
@@ -23,8 +26,14 @@ public class Authorization {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Wrong password").build();
         }
 
-        //TODO vrátit JWT token
-        return Response.ok().entity("Authorized").build();
+        //Momentálně Secret key na pevno, při real-life využití, je třeba toto mít schované v nějakém vaultu, popřípadě na serveru, aby to nešlo na git.
+        String token = Jwt.subject(user.email)
+                .claim("role", user.role)
+                .issuedAt(Instant.now().getEpochSecond())
+                .expiresAt(System.currentTimeMillis() / 1000 + 3600)
+                .signWithSecret("T9BAmve6Z3SynHgspogUuEcPTo1LZrQRZorlPnpw1Tk=");
+
+        return Response.ok().entity("Authorized... {" + token + "}").build();
     }
 
     @POST
