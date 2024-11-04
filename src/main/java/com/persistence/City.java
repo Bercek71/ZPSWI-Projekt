@@ -16,10 +16,6 @@ public class City extends PanacheEntity {
     public int zipCode;
 
     @ManyToOne
-    @JoinColumn(name = "country_id")
+    @JoinColumn(name = "country_id", nullable = false)
     public Country country;
-
-    @Transient
-    @JsonbProperty("countryId")
-    public Long countryId;
 }
