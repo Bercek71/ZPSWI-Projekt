@@ -1,5 +1,5 @@
 user [icon: user, color: blue] {
-  id int pk
+  id long pk
   firstName string
   lastName string
   password string
@@ -8,13 +8,8 @@ user [icon: user, color: blue] {
 }
 
 booking [icon: bookmark, color: green] {
-  id int pk
+  id long pk
   price_total int
-}
-
-status [icon: check, color: green] {
-  id int pk
-  name string
 }
 
 role [icon: user-secret, color: blue] {
@@ -24,65 +19,84 @@ role [icon: user-secret, color: blue] {
 
 hotel [icon: home, color: green] {
   id int pk
-  name string
-  country 
+  name string [255]
+  country_id long
 }
 
-street [icon: form, color: yellow] {
+address [icon: form, color: yellow] {
   id int pk
-  city
-  name string
+  city_id long
+  name string [255]
   land_registry_number int
   house_number int
 }
 
 city [icon: city, color: yellow] {
-  id int pk
+  id long pk
   name string
   zip_code int
+  country_id long
 }
 
 country [icon: flag, color: yellow] {
-  id int pk
-  name string
-  iso_code string
+  id long pk
+  name string [255]
+  iso_code string [255]
 }
 
 room [icon: bed, color: green] {
-  id int pk
+  id long pk
   room_number int 
-  type string
+  type string [255]
   price_per_night int
-  is_available
+  is_available bool
+  max_guests int
+  hotel_id long
 }
 
 reservation [color: green] {
+  id long pk
   start_date date
   end_date date
-  room
-  status
+  room_id long
+  status string [255]
   price int
-  paid_at datetime
+  paid_at timestamp
+  booking_id long
 }
 
 review [icon: message-circle, color: purple] {
-  user
-  hotel
+  id long pk
+  user_id long
+  hotel_id long
   message string [2000]
   rating int
 }
 
+amenity [icon: check, color: green] {
+  id long pk
+  name string [255]
+}
+
+room_amenity [icon: list, color: green] {
+  id long pk
+  room_id long
+  amenity_id long
+  value integer
+}
 
 
 user.role > role.id
 user.id < booking.user
-room.hotel > hotel.id
-reservation.status > status.id
-booking.id < reservation.booking
-room.id < reservation.room
+room.hotel_id > hotel.id
+booking.id < reservation.booking_id
+room.id < reservation.room_id
 hotel.id <> user.id
-country.id < city.country
-country.id < hotel.country
-city.id < street.city
-hotel.id < review.hotel 
-review.user > user.id
+country.id < city.country_id
+country.id < hotel.country_id
+city.id < address.city_id
+hotel.id < review.hotel_id 
+review.user_id > user.id
+amenity.id < room_amenity.amenity_id
+room_amenity.room_id > room.id
+
