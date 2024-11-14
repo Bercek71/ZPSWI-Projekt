@@ -1,4 +1,4 @@
-package com.endpoints;
+package com.resources;
 
 import com.persistence.City;
 import com.persistence.Country;
@@ -36,7 +36,6 @@ public class CityResource implements Resource<City> {
     @Override
     public Response create(City city) {
         try {
-            city.country = Country.findById(city.countryId);
             city.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
@@ -54,7 +53,7 @@ public class CityResource implements Resource<City> {
         }
 
         try {
-            updateCity.country = Country.findById(city.countryId);
+            updateCity.country = city.country;
             updateCity.name = city.name;
             updateCity.zipCode = city.zipCode;
 

@@ -1,4 +1,4 @@
-package com.endpoints;
+package com.resources;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.ws.rs.*;

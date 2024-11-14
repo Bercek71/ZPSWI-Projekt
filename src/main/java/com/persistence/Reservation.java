@@ -39,7 +39,7 @@ public class Reservation extends PanacheEntity {
     public LocalDateTime paidAt;
 
     @ManyToOne
-    @JoinColumn(name = "booking_id")
+    @JoinColumn(name = "booking_id", nullable = false)
     public Booking booking;
 
     @Transient
@@ -56,6 +56,5 @@ public class Reservation extends PanacheEntity {
         PAYMENT_ACCEPTED,
         ENDED,
         EXPIRED,
-
     }
 }

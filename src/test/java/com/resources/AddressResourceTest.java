@@ -1,4 +1,4 @@
-package com.endpoints;
+package com.resources;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -13,8 +13,8 @@ import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
-@TestHTTPEndpoint(UserResource.class)
-public class UserResourceTest {
+@TestHTTPEndpoint(AddressResource.class)
+public class AddressResourceTest {
 
 	@Test
 	void findAllShouldAlwaysReturnListAndOK() {

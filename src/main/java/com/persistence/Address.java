@@ -22,8 +22,4 @@ public class Address extends PanacheEntity {
     @ManyToOne
     @JoinColumn(name = "city_id")
     public City city;
-
-    @Transient
-    @JsonbProperty("cityId")
-    public Long cityId;
 }

@@ -1,4 +1,4 @@
-package com.endpoints;
+package com.resources;
 
 import com.persistence.Amenity;
 import com.persistence.Hotel;
@@ -18,7 +18,7 @@ import java.util.List;
 public class RoomResource implements Resource<Room> {
 
     @GET
-    @Path("roomAmenities/{id}")
+    @Path("{id}/amenities")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAmenities(@PathParam("id") Long roomId) {
         List<Amenity> amenities = RoomAmenity.findAllAmenitiesForRoom(roomId);

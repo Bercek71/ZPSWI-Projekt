@@ -1,4 +1,4 @@
-package com.endpoints;
+package com.resources;
 
 import com.persistence.Booking;
 import io.quarkus.test.common.http.TestHTTPEndpoint;

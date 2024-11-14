@@ -9,7 +9,6 @@
 insert into app_user (id, email, password, first_name, last_name, role) values(1,'admin@localhost', 'admin', 'Admin', 'Admin', 'ADMIN');
 insert into app_user (id, email, password, first_name, last_name, role) values(2, 'user@localhost', 'user', 'User', 'User', 'USER');
 
-
 insert into Country(id, name, iso_code) values (1,'France', 'FR');
 insert into Country(id, name, iso_code) values (2,'Germany', 'DE');
 insert into Country(id, name, iso_code) values (3,'United Kingdom', 'UK');
@@ -144,14 +143,15 @@ insert into amenity(id, name) values(14, 'board half');
 insert into amenity(id, name) values(15, 'board full');
 insert into amenity(id, name) values(16, 'board breakfast');
 
-insert into room_amenity(id, amenity_id, room_id, counter) values(1,1, 1, 0);
-insert into room_amenity(id, amenity_id, room_id, counter) values(2,2, 4, 0);
-insert into room_amenity(id, amenity_id, room_id, counter) values(3,1, 3, 1);
+insert into room_amenity(id, amenity_id, room_id, value) values(1,1, 1, 0);
+insert into room_amenity(id, amenity_id, room_id, value) values(2,2, 3, 0);
+insert into room_amenity(id, amenity_id, room_id, value) values(3,1, 3, 1);
 
 ALTER SEQUENCE app_user_seq RESTART WITH 3;
 ALTER SEQUENCE hotel_seq RESTART WITH 24;
 ALTER SEQUENCE room_seq RESTART WITH 61;
 ALTER SEQUENCE city_seq RESTART WITH 28;
+ALTER SEQUENCE country_seq RESTART WITH 10;
 ALTER SEQUENCE address_seq RESTART WITH 10;
 ALTER SEQUENCE booking_seq RESTART WITH 3;
 ALTER SEQUENCE reservation_seq RESTART WITH 3;

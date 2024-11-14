@@ -1,12 +1,27 @@
-package com.endpoints;
+package com.resources;
 
 import com.persistence.Amenity;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
 
 @Path("amenities")
 public class AmenityResource implements Resource<Amenity>{
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findAllEntities() {
+        List<Amenity> amenities = Amenity.listAll();
+        if (amenities.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(amenities).build();
+    }
 
     @Override
     public Response find(Long filter) {
