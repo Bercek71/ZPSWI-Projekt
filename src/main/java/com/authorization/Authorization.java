@@ -1,6 +1,8 @@
 package com.authorization;
 
 import com.persistence.AppUser;
+import io.quarkus.security.Authenticated;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -9,29 +11,33 @@ import org.mindrot.jbcrypt.BCrypt;
 import io.smallrye.jwt.build.Jwt;
 
 import java.time.Instant;
+import java.util.HashSet;
 
 @Path("")
 public class Authorization {
 
-    @GET
+    @POST
     @Path("login")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(@QueryParam("email") String email, @QueryParam("password") String password) {
-        AppUser user = AppUser.find("email", email).firstResult();
+    public Response login(AppUser user) {
+        AppUser existingUser = AppUser.find("email", user.email).firstResult();
 
-        if (user == null) {
+        if (existingUser == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Wrong email").build();
         }
-        if (!BCrypt.checkpw(password, user.password)){
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Wrong password").build();
+        if (!BCrypt.checkpw(user.password, existingUser.password)){
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Wrong password").entity(user).build();
         }
 
         //Momentálně Secret key na pevno, při real-life využití, je třeba toto mít schované v nějakém vaultu, popřípadě na serveru, aby to nešlo na git.
-        String token = Jwt.subject(user.email)
-                .claim("role", user.role)
+        String token = Jwt.subject(existingUser.email)
+                .groups(existingUser.role.toString())
                 .issuedAt(Instant.now().getEpochSecond())
                 .expiresAt(System.currentTimeMillis() / 1000 + 3600)
                 .signWithSecret("T9BAmve6Z3SynHgspogUuEcPTo1LZrQRZorlPnpw1Tk=");
+
+        System.out.println(existingUser.role.toString());
 
         return Response.ok().entity("Authorized... {" + token + "}").build();
     }
@@ -51,6 +57,17 @@ public class Authorization {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
-        return Response.status(Response.Status.CREATED).entity("Successfully created new user").build();
+        return Response.status(Response.Status.CREATED).entity("Successfully created new user: ").entity(user).build();
+    }
+
+    @GET
+    @Authenticated
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserFromToken(@HeaderParam("Authorization") String authorizationHeader) {
+        //RETURN USER WITHOUT PASSWORD
+        AppUser user = null;
+        //return Response.status(Response.Status.OK).entity().firstResult().build();
+        return null;
     }
 }
