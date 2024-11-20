@@ -53,4 +53,23 @@ public class Hotel extends PanacheEntity {
                         .and("cityId", cityId))
                 .list();
     }
+
+    public static List<Room> findAllRooms(Long hotelId){
+        List<Object[]> results = getEntityManager()
+                .createQuery("select r.id, r.isAvailable, r.maxGuests, r.pricePerNight, r.roomNumber, r.type " +
+                        "from Room r where r.hotel.id = :hotelId", Object[].class)
+                .setParameter("hotelId", hotelId)
+                .getResultList();
+
+        return results.stream().map(row -> {
+            Room room = new Room();
+            room.id = (Long) row[0];
+            room.isAvailable = (Boolean) row[1];
+            room.maxGuests = (Integer) row[2];
+            room.pricePerNight = (Integer) row[3];
+            room.roomNumber = (Integer) row[4];
+            room.type = (String) row[5];
+            return room;
+        }).toList();
+    }
 }
