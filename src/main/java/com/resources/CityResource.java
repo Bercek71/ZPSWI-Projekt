@@ -19,7 +19,7 @@ public class CityResource implements Resource<City> {
     public Response findAllEntities() {
         List<City> cities = City.listAll();
         if (cities.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'No city was found.'}").build();
         }
         return Response.ok(cities).build();
     }
@@ -28,7 +28,7 @@ public class CityResource implements Resource<City> {
     public Response find(Long filter) {
         City city = City.findById(filter);
         if (city == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'City not found.'}").build();
         }
         return Response.ok(city).build();
     }
@@ -40,7 +40,7 @@ public class CityResource implements Resource<City> {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED).entity(city).build();
     }
 
     @Transactional
@@ -49,7 +49,7 @@ public class CityResource implements Resource<City> {
         City updateCity = City.findById(id);
 
         if (updateCity == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("City not found.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'City not found.'}").build();
         }
 
         try {
@@ -67,6 +67,6 @@ public class CityResource implements Resource<City> {
     @Transactional
     @Override
     public Response delete(Long id) {
-        return null;
+        return Response.status(Response.Status.NOT_IMPLEMENTED).entity("{msg: 'Method not implemented.'}").build();
     }
 }

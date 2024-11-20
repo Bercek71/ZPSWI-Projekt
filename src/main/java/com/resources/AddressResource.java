@@ -19,7 +19,7 @@ public class AddressResource implements Resource<Address> {
     public Response findAllEntities() {
         List<Address> addresses = Address.listAll();
         if (addresses.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'No address was found.'}").build();
         }
         return Response.ok(addresses).build();
     }
@@ -28,7 +28,7 @@ public class AddressResource implements Resource<Address> {
     public Response find(Long filter) {
         Address address = Address.findById(filter);
         if (address == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'Address not found.'}").build();
         }
         return Response.ok(address).build();
     }
@@ -41,7 +41,7 @@ public class AddressResource implements Resource<Address> {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED).entity(address).build();
     }
 
     @Transactional
@@ -50,11 +50,11 @@ public class AddressResource implements Resource<Address> {
         Address updateAddress = Address.findById(id);
 
         if(address.city == null){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Wrong body").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: 'Wrong body'}").build();
         }
 
         if (updateAddress == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Street not found.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'Street not found.'}").build();
         }
 
         try {

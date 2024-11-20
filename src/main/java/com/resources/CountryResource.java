@@ -18,7 +18,7 @@ public class CountryResource implements Resource<Country> {
     public Response findAllEntities() {
         List<Country> countries = Country.listAll();
         if (countries.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'No country was found.'}").build();
         }
         return Response.ok(countries).build();
     }
@@ -27,7 +27,7 @@ public class CountryResource implements Resource<Country> {
     public Response find(Long filter) {
         Country country = Country.findById(filter);
         if (country == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'Country not found.'}").build();
         }
         return Response.ok(country).build();
     }
@@ -40,7 +40,7 @@ public class CountryResource implements Resource<Country> {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
         }
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED).entity(country).build();
     }
 
     @Transactional
@@ -49,7 +49,7 @@ public class CountryResource implements Resource<Country> {
         Country updateCountry = Country.findById(id);
 
         if (updateCountry == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Country not found.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'Country not found.'}").build();
         }
 
         try {

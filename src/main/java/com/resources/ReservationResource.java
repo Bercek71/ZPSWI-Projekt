@@ -21,7 +21,7 @@ public class ReservationResource implements Resource<Reservation> {
     public Response findAllEntities() {
         List<Reservation> reservations = Reservation.listAll();
         if (reservations.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'No reservation was found.'}").build();
         }
         return Response.ok(reservations).build();
     }
@@ -38,7 +38,7 @@ public class ReservationResource implements Resource<Reservation> {
     @Transactional
     @Override
     public Response create(Reservation reservation) {
-        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+        return Response.status(Response.Status.NOT_IMPLEMENTED).entity("{msg: 'Mehtod not implemented.'}").build();
     }
 
     @Transactional
@@ -47,10 +47,10 @@ public class ReservationResource implements Resource<Reservation> {
         Reservation updateReservation = Reservation.findById(id);
 
         if(reservation == null){
-            return Response.status(Response.Status.BAD_REQUEST).entity("Wrong body.").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'Wrong body.'}").build();
         }
         if (updateReservation == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Reservation not found.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'Reservation not found.'}").build();
         }
 
         try {
