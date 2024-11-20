@@ -17,7 +17,6 @@ public class HotelResource implements Resource<Hotel> {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRooms(@PathParam("id") Long hotelId) {
         List<Room> rooms = Hotel.findAllRooms(hotelId);
-
         if(rooms == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'No room was found.'}").build();
         }
