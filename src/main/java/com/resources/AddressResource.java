@@ -39,7 +39,7 @@ public class AddressResource implements Resource<Address> {
         try {
             address.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.status(Response.Status.CREATED).entity(address).build();
     }
@@ -65,7 +65,7 @@ public class AddressResource implements Resource<Address> {
 
             updateAddress.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.ok(updateAddress).build();
     }

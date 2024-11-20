@@ -38,7 +38,7 @@ public class CityResource implements Resource<City> {
         try {
             city.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.status(Response.Status.CREATED).entity(city).build();
     }
@@ -59,7 +59,7 @@ public class CityResource implements Resource<City> {
 
             updateCity.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.ok(updateCity).build();
     }

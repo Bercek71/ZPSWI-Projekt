@@ -42,7 +42,7 @@ public class ReviewResource implements Resource<Review> {
             review.appUser = AppUser.findById(review.userId);
             review.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.status(Response.Status.CREATED).entity(review).build();
     }
@@ -64,7 +64,7 @@ public class ReviewResource implements Resource<Review> {
 
             updateReview.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.ok(updateReview).build();
     }

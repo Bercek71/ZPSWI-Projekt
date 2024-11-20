@@ -38,7 +38,7 @@ public class AmenityResource implements Resource<Amenity>{
         try{
             amenity.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.status(Response.Status.CREATED).entity(amenity).build();
     }
@@ -58,7 +58,7 @@ public class AmenityResource implements Resource<Amenity>{
 
                 updateAmenity.persist();
             } catch (Exception e) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
             }
             return Response.ok(updateAmenity).build();
         }

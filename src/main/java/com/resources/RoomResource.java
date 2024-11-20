@@ -55,7 +55,7 @@ public class RoomResource implements Resource<Room> {
             room.hotel = Hotel.findById(room.hotelId);
             room.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.status(Response.Status.CREATED).entity(room).build();
     }
@@ -78,7 +78,7 @@ public class RoomResource implements Resource<Room> {
 
             updateRoom.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.ok(updateRoom).build();
     }

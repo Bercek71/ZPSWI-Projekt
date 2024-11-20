@@ -64,7 +64,7 @@ public class ReservationResource implements Resource<Reservation> {
 
             updateReservation.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.ok(updateReservation).build();
     }

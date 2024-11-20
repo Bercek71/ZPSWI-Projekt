@@ -48,7 +48,7 @@ public class HotelResource implements Resource<Hotel> {
             }
             return Response.ok(hotels).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
     }
 
@@ -90,7 +90,7 @@ public class HotelResource implements Resource<Hotel> {
             }
             hotel.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.status(Response.Status.CREATED).entity(hotel).build();
     }
@@ -108,7 +108,7 @@ public class HotelResource implements Resource<Hotel> {
             updateHotel.persist();
 
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.ok(updateHotel).build();
     }
@@ -125,7 +125,7 @@ public class HotelResource implements Resource<Hotel> {
         try {
             hotel.delete();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
         return Response.status(Response.Status.OK).entity(hotel).build();
     }
