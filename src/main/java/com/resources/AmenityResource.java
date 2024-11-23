@@ -37,7 +37,7 @@ public class AmenityResource implements Resource<Amenity>{
     @Transactional
     @Override
     @RolesAllowed("MANAGER")
-    public Response create(Amenity entity) {
+    public Response create(Amenity amenity) {
         try{
             amenity.persist();
         } catch (Exception e) {

@@ -1,9 +1,6 @@
 package com.resources;
 
-import com.persistence.Address;
-import com.persistence.City;
-import com.persistence.Country;
-import com.persistence.Hotel;
+import com.persistence.*;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
