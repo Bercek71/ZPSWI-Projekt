@@ -2,7 +2,9 @@ package com.authorization;
 
 import com.persistence.AppUser;
 import io.quarkus.security.Authenticated;
-import jakarta.inject.Inject;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -35,12 +37,16 @@ public class Authorization {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Wrong password " + user.email).build();
         }
 
+        HashSet hs = new HashSet<>();
+        hs.add(existingUser.role.toString());
         //Momentálně Secret key na pevno, při real-life využití, je třeba toto mít schované v nějakém vaultu, popřípadě na serveru, aby to nešlo na git.
         String token = Jwt.subject(existingUser.email)
-                .groups(existingUser.role.toString())
-                .issuedAt(Instant.now().getEpochSecond())
-                .expiresAt(System.currentTimeMillis() / 1000 + 3600) //1 hodina MAGIC NUMBERS
-                .sign();
+                .claim("roles",existingUser.role.toString())
+                //.issuedAt(Instant.now().getEpochSecond())
+                //.expiresAt(System.currentTimeMillis() / 1000 + 3600)
+                .signWithSecret("T9BAmve6Z3SynHgspogUuEcPTo1LZrQRZorlPnpw1Tk=");
+
+        System.out.println(existingUser.role.toString());
 
         return Response.ok().entity(token).build();
     }
@@ -67,18 +73,11 @@ public class Authorization {
     @Path("authorized")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Authenticated
+    @Path("abc")
     public Response getUserFromToken() {
-        AppUser user;
-        try {
-            user = AppUser.find("email", jwt.getSubject()).firstResult();
-            if (user == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("User not found.").build();
-            }
-            user.password = null;
-        } catch(Exception e){
-            return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
-        }
-        return Response.status(Response.Status.OK).entity(user).build();
+        //RETURN USER WITHOUT PASSWORD
+        AppUser user = null;
+        return Response.status(Response.Status.OK).build();
+        //return null;
     }
 }

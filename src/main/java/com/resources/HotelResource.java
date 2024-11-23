@@ -1,6 +1,11 @@
 package com.resources;
 
-import com.persistence.*;
+import com.persistence.Address;
+import com.persistence.City;
+import com.persistence.Country;
+import com.persistence.Hotel;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -63,6 +68,7 @@ public class HotelResource implements Resource<Hotel> {
 
     @Transactional
     @Override
+    @RolesAllowed("MANAGER")
     public Response create(Hotel hotel) {
         try {
             if(hotel == null){
@@ -97,6 +103,7 @@ public class HotelResource implements Resource<Hotel> {
 
     @Transactional
     @Override
+    @RolesAllowed("MANAGER")
     public Response update(Long id, Hotel hotel) {
         Hotel updateHotel = Hotel.findById(id);
 
@@ -115,6 +122,7 @@ public class HotelResource implements Resource<Hotel> {
 
     @Transactional
     @Override
+    @RolesAllowed("MANAGER")
     public Response delete(Long id) {
 
         Hotel hotel = Hotel.findById(id);

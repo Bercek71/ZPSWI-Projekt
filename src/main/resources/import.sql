@@ -6,7 +6,7 @@
 -- alter sequence myentity_seq restart with 4;
 
 
-insert into app_user (id, email, password, first_name, last_name, role) values(1,'admin@localhost', 'admin', 'Admin', 'Admin', 'ADMIN');
+insert into app_user (id, email, password, first_name, last_name, role) values(1,'admin@localhost', 'admin', 'Admin', 'Admin', 'MANAGER');
 insert into app_user (id, email, password, first_name, last_name, role) values(2, 'user@localhost', 'user', 'User', 'User', 'USER');
 
 insert into Country(id, name, iso_code) values (1,'France', 'FR');

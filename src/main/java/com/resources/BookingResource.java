@@ -3,6 +3,7 @@ package com.resources;
 import com.persistence.AppUser;
 import com.persistence.Booking;
 import com.persistence.Reservation;
+import io.quarkus.security.Authenticated;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -17,6 +18,7 @@ public class BookingResource implements Resource<Booking> {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
     public Response findAllEntities() {
         List<Booking> bookings = Booking.listAll();
         if (bookings.isEmpty()) {
@@ -26,6 +28,7 @@ public class BookingResource implements Resource<Booking> {
     }
 
     @Override
+    @Authenticated
     public Response find(Long filter) {
         Booking booking = Booking.findById(filter);
         if (booking == null) {

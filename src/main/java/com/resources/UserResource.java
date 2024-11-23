@@ -1,6 +1,8 @@
 package com.resources;
 
 import com.persistence.AppUser;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -15,6 +17,7 @@ public class UserResource implements Resource<AppUser> {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
     public Response findAllEntities() {
         List<AppUser> users = AppUser.listAll();
         if (users.isEmpty()) {
@@ -34,6 +37,7 @@ public class UserResource implements Resource<AppUser> {
 
     @Transactional
     @Override
+    @RolesAllowed("MANAGER")
     public Response create(AppUser user) {
         try {
             user.persist();
@@ -45,6 +49,7 @@ public class UserResource implements Resource<AppUser> {
 
     @Transactional
     @Override
+    @Authenticated
     public Response update(Long id, AppUser user) {
         AppUser updateUser = AppUser.findById(id);
 
@@ -69,6 +74,7 @@ public class UserResource implements Resource<AppUser> {
 
     @Transactional
     @Override
+    @Authenticated
     public Response delete(Long id) {
         //Need to check for constraints
         AppUser user = AppUser.findById(id);
