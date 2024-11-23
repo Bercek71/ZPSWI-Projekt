@@ -1,19 +1,23 @@
 package com.resources;
 
-import com.persistence.AppUser;
-import com.persistence.Booking;
-import com.persistence.Reservation;
+import com.persistence.*;
+import io.quarkus.security.Authenticated;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import java.time.Period;
 import java.util.List;
+import java.util.Optional;
 
 @Path("bookings")
 public class BookingResource implements Resource<Booking> {
+
+    @Inject
+    JsonWebToken jwt;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -36,6 +40,7 @@ public class BookingResource implements Resource<Booking> {
 
     @Override
     @Transactional
+    @Authenticated
     public Response create(Booking booking) {
         try {
             if(booking == null) {
@@ -45,11 +50,60 @@ public class BookingResource implements Resource<Booking> {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'No reservations.'}").build();
             }
 
-            booking.appUser = AppUser.findById(booking.userId);
-            if(booking.appUser == null) {
+            Optional<AppUser> user = AppUser.find("email", jwt.getSubject()).singleResultOptional();
+            if(user.isEmpty()) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: 'UserId doesn't exist.'}").build();
             }
+            booking.appUser = user.get();
+            for (Reservation reservation : booking.reservations) {
+                if (reservation != null) {
+                    if(reservation.startDate.isAfter(reservation.endDate)){
+                        return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'Start date later than end date.'}").build();
+                    }
+                    reservation.booking = booking;
+                    reservation.status = Reservation.ReservationStatus.PENDING;
+                    reservation.room = Room.findById(reservation.roomId);
+                    if (!reservation.room.isReservable(reservation.startDate, reservation.endDate)) {
+                        return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'Room is not reservable.'}").build();
+                    }
+                    reservation.price = Period.between(reservation.startDate, reservation.endDate).getDays() * reservation.room.pricePerNight;
+                    booking.priceTotal += reservation.price;
+                }
+            }
             booking.persist();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+        }
+        return Response.status(Response.Status.CREATED).entity(booking).build();
+    }
+
+    @POST
+    @Path("unregistered")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createUnregistered(UnregisteredBooking unregisteredBooking) {
+        try {
+            Booking booking = unregisteredBooking.booking;
+            if(booking == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'Wrong body'}").build();
+            }
+            if(booking.reservations.isEmpty()) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'No reservations.'}").build();
+            }
+
+            AppUser blankUser = AppUser.find("email", unregisteredBooking.email).firstResult();
+            if (blankUser == null){
+                blankUser = new AppUser();
+                blankUser.email = unregisteredBooking.email;
+                blankUser.persist();
+            }
+
+            blankUser = AppUser.find("email", blankUser.email).firstResult();
+            if(blankUser == null) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: 'Ups.'}").build();
+            }
+            booking.appUser = blankUser;
 
             for (Reservation reservation : booking.reservations) {
                 if (reservation != null) {
@@ -57,13 +111,20 @@ public class BookingResource implements Resource<Booking> {
                         return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'Start date later than end date.'}").build();
                     }
                     reservation.booking = booking;
-                    reservation.persist();
+                    reservation.status = Reservation.ReservationStatus.PENDING;
+                    reservation.room = Room.findById(reservation.roomId);
+                    if (!reservation.room.isReservable(reservation.startDate, reservation.endDate)) {
+                        return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'Room is not reservable.'}").build();
+                    }
+                    reservation.price = Period.between(reservation.startDate, reservation.endDate).getDays() * reservation.room.pricePerNight;
+                    booking.priceTotal += reservation.price;
                 }
             }
+            booking.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
         }
-        return Response.status(Response.Status.CREATED).entity(booking).build();
+        return Response.status(Response.Status.CREATED).entity(unregisteredBooking).build();
     }
 
     @Transactional
