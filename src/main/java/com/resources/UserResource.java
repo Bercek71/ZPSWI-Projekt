@@ -18,18 +18,24 @@ public class UserResource implements Resource<AppUser> {
     public Response findAllEntities() {
         List<AppUser> users = AppUser.listAll();
         if (users.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'No user was found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{'msg': 'No user was found.'}")
+                    .build();
         }
-        return Response.ok(users).build();
+        return Response.ok(users)
+                .build();
     }
 
     @Override
     public Response find(Long filter) {
         AppUser user = AppUser.findById(filter);
         if (user == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'User not found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{'msg': 'User not found.'}")
+                    .build();
         }
-        return Response.ok(user).build();
+        return Response.ok(user)
+                .build();
     }
 
     @Transactional
@@ -38,9 +44,13 @@ public class UserResource implements Resource<AppUser> {
         try {
             user.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .build();
         }
-        return Response.status(Response.Status.CREATED).entity(user).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(user)
+                .build();
     }
 
     @Transactional
@@ -49,7 +59,9 @@ public class UserResource implements Resource<AppUser> {
         AppUser updateUser = AppUser.findById(id);
 
         if (updateUser == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'User not found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{'msg': 'User not found.'}")
+                    .build();
         }
 
         try {
@@ -61,11 +73,13 @@ public class UserResource implements Resource<AppUser> {
 
             updateUser.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .build();
         }
-        return Response.ok(updateUser).build();
+        return Response.ok(updateUser)
+                .build();
     }
-
 
     @Transactional
     @Override
@@ -73,13 +87,19 @@ public class UserResource implements Resource<AppUser> {
         //Need to check for constraints
         AppUser user = AppUser.findById(id);
         if (user == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'User not found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{'msg': 'User not found.'}")
+                    .build();
         }
         try {
             user.delete();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .build();
         }
-        return Response.status(Response.Status.OK).entity(user).build();
+        return Response.status(Response.Status.OK)
+                .entity(user)
+                .build();
     }
 }

@@ -18,7 +18,9 @@ public class HotelResource implements Resource<Hotel> {
     public Response getRooms(@PathParam("id") Long hotelId) {
         List<Room> rooms = Hotel.findAllRooms(hotelId);
         if(rooms == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'No room was found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{'msg': 'No room was found.'}")
+                    .build();
         }
         return Response.ok(rooms).build();
     }
@@ -37,18 +39,24 @@ public class HotelResource implements Resource<Hotel> {
             if (checkIn == null && checkOut == null && city == null && guests == null) {
                 hotels = Hotel.listAll();
             } else if (checkIn == null || checkOut == null || city == null || guests == null) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'Missing parameters.'}").build();
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{'msg': 'Missing parameters.'}")
+                        .build();
             } else {
                 LocalDate checkInDate = LocalDate.parse(checkIn, formatter);
                 LocalDate checkOutDate = LocalDate.parse(checkOut, formatter);
                 hotels = Hotel.findAvailableHotels(checkInDate, checkOutDate, guests, city);
             }
             if (hotels.isEmpty()) {
-                return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'No hotel was found.'}").build();
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("{'msg': 'No hotel was found.'}")
+                        .build();
             }
             return Response.ok(hotels).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .build();
         }
     }
 
@@ -56,7 +64,9 @@ public class HotelResource implements Resource<Hotel> {
     public Response find(Long filter) {
         Hotel hotel = Hotel.findById(filter);
         if (hotel == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'Hotel not found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{'msg': 'Hotel not found.'}")
+                    .build();
         }
         return Response.ok(hotel).build();
     }
@@ -66,7 +76,9 @@ public class HotelResource implements Resource<Hotel> {
     public Response create(Hotel hotel) {
         try {
             if(hotel == null){
-                return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'Wrong body.'}").build();
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{'msg': 'Wrong body.'}")
+                        .build();
             }
 
             Country existingCountry = Country.find("isoCode", hotel.address.city.country.isoCode).firstResult();
@@ -90,9 +102,13 @@ public class HotelResource implements Resource<Hotel> {
             }
             hotel.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .build();
         }
-        return Response.status(Response.Status.CREATED).entity(hotel).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(hotel)
+                .build();
     }
 
     @Transactional
@@ -101,16 +117,21 @@ public class HotelResource implements Resource<Hotel> {
         Hotel updateHotel = Hotel.findById(id);
 
         if (updateHotel == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'Hotel not found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{'msg': 'Hotel not found.'}")
+                    .build();
         }
         try {
             updateHotel.name = hotel.name;
             updateHotel.persist();
 
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .build();
         }
-        return Response.ok(updateHotel).build();
+        return Response.ok(updateHotel)
+                .build();
     }
 
     @Transactional
@@ -120,13 +141,19 @@ public class HotelResource implements Resource<Hotel> {
         Hotel hotel = Hotel.findById(id);
 
         if (hotel == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'Hotel not found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{'msg': 'Hotel not found.'}")
+                    .build();
         }
         try {
             hotel.delete();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .build();
         }
-        return Response.status(Response.Status.OK).entity(hotel).build();
+        return Response.status(Response.Status.OK)
+                .entity(hotel)
+                .build();
     }
 }
