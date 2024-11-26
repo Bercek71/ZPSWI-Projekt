@@ -27,7 +27,6 @@ public class AppUser extends PanacheEntity {
     @JsonbProperty("role")
     public AppUserRole role;
 
-
     public enum AppUserRole {
         ADMIN,
         USER,
