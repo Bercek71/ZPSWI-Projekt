@@ -1,9 +1,13 @@
 package com.resources;
 
 import com.persistence.AppUser;
+import com.persistence.Hotel;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -14,12 +18,26 @@ import java.util.List;
 public class UserResource implements Resource<AppUser> {
 
     @GET
+    @Path("{id}/hotels")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
+    public Response getOwnedHotels(@PathParam("id") Long ownerId){
+        List<Hotel> hotels = Hotel.findAllOwnedHotels(ownerId);
+        if(hotels.isEmpty()){
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"msg\": \"No hotel was found.\"}")
+                    .build();
+        }
+        return Response.ok(hotels).build();
+    }
+
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
         List<AppUser> users = AppUser.listAll();
         if (users.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'No user was found.'}")
+                    .entity("{\"msg\": \"No user was found.\"}")
                     .build();
         }
         return Response.ok(users)
@@ -31,7 +49,7 @@ public class UserResource implements Resource<AppUser> {
         AppUser user = AppUser.findById(filter);
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'User not found.'}")
+                    .entity("{\"msg\": \"User not found.\"}")
                     .build();
         }
         return Response.ok(user)
@@ -45,7 +63,7 @@ public class UserResource implements Resource<AppUser> {
             user.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.status(Response.Status.CREATED)
@@ -60,7 +78,7 @@ public class UserResource implements Resource<AppUser> {
 
         if (updateUser == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'User not found.'}")
+                    .entity("{\"msg\": \"User not found.\"}")
                     .build();
         }
 
@@ -74,7 +92,7 @@ public class UserResource implements Resource<AppUser> {
             updateUser.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.ok(updateUser)
@@ -88,14 +106,14 @@ public class UserResource implements Resource<AppUser> {
         AppUser user = AppUser.findById(id);
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'User not found.'}")
+                    .entity("{\"msg\": \"User not found.\"}")
                     .build();
         }
         try {
             user.delete();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.status(Response.Status.OK)
