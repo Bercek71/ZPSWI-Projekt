@@ -20,7 +20,7 @@ public class AddressResource implements Resource<Address> {
         List<Address> addresses = Address.listAll();
         if (addresses.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'No address was found.'}")
+                    .entity("{\"msg\": \"No address was found.\"}")
                     .build();
         }
         return Response.ok(addresses)
@@ -32,7 +32,7 @@ public class AddressResource implements Resource<Address> {
         Address address = Address.findById(filter);
         if (address == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Address not found.'}")
+                    .entity("{\"msg\": \"Address not found.\"}")
                     .build();
         }
         return Response.ok(address)
@@ -46,7 +46,7 @@ public class AddressResource implements Resource<Address> {
             address.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.status(Response.Status.CREATED)
@@ -61,13 +61,13 @@ public class AddressResource implements Resource<Address> {
 
         if(address.city == null){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': 'Wrong body'}")
+                    .entity("{\"msg\": \"Wrong body\"}")
                     .build();
         }
 
         if (updateAddress == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Street not found.'}")
+                    .entity("{\"msg\": \"Street not found.\"}")
                     .build();
         }
 
@@ -80,7 +80,7 @@ public class AddressResource implements Resource<Address> {
             updateAddress.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.ok(updateAddress).build();

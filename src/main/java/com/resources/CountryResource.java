@@ -19,7 +19,7 @@ public class CountryResource implements Resource<Country> {
         List<Country> countries = Country.listAll();
         if (countries.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'No country was found.'}")
+                    .entity("{\"msg\": \"No country was found.\"}")
                     .build();
         }
         return Response.ok(countries)
@@ -31,7 +31,7 @@ public class CountryResource implements Resource<Country> {
         Country country = Country.findById(filter);
         if (country == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Country not found.'}")
+                    .entity("{\"msg\": \"Country not found.\"}")
                     .build();
         }
         return Response.ok(country)
@@ -45,7 +45,7 @@ public class CountryResource implements Resource<Country> {
             country.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.status(Response.Status.CREATED)
@@ -60,7 +60,7 @@ public class CountryResource implements Resource<Country> {
 
         if (updateCountry == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Country not found.'}")
+                    .entity("{\"msg\": \"Country not found.\"}")
                     .build();
         }
 
@@ -71,7 +71,7 @@ public class CountryResource implements Resource<Country> {
             updateCountry.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.ok(updateCountry).build();
@@ -81,7 +81,7 @@ public class CountryResource implements Resource<Country> {
     @Override
     public Response delete(Long id) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
-                .entity("{'msg': 'Method not implemented.'}")
+                .entity("{\"msg\": \"Method not implemented.\"}")
                 .build();
     }
 }

@@ -31,7 +31,7 @@ public class BookingResource implements Resource<Booking> {
         List<Booking> bookings = Booking.listAll();
         if (bookings.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'No booking was found.'}")
+                    .entity("{\"msg\": \"No booking was found.\"}")
                     .build();
         }
         return Response.ok(bookings).build();
@@ -48,7 +48,7 @@ public class BookingResource implements Resource<Booking> {
         Booking booking = Booking.findById(filter);
         if (booking == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Booking not found.'}")
+                    .entity("{\"msg\": \"Booking not found.\"}")
                     .build();
         }
         return Response.ok(booking).build();
@@ -68,19 +68,19 @@ public class BookingResource implements Resource<Booking> {
         try {
             if(booking == null) {
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{'msg': 'Wrong body'}")
+                        .entity("{\"msg\": \"Wrong body\"}")
                         .build();
             }
             if(booking.reservations.isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{'msg': 'No reservations.'}")
+                        .entity("{\"msg\": \"No reservations.\"}")
                         .build();
             }
 
             booking.appUser = AppUser.findById(booking.userId);
             if(booking.appUser == null) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity("{'msg': 'UserId doesn't exist.'}")
+                        .entity("{\"msg\": \"UserId doesn\"t exist.\"}")
                         .build();
             }
             booking.persist();
@@ -89,7 +89,7 @@ public class BookingResource implements Resource<Booking> {
                 if (reservation != null) {
                     if(reservation.startDate.isAfter(reservation.endDate)){
                         return Response.status(Response.Status.BAD_REQUEST)
-                                .entity("{'msg': 'Start date later than end date.'}")
+                                .entity("{\"msg\": \"Start date later than end date.\"}")
                                 .build();
                     }
                     reservation.booking = booking;
@@ -98,7 +98,7 @@ public class BookingResource implements Resource<Booking> {
             }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.status(Response.Status.CREATED)
@@ -117,7 +117,7 @@ public class BookingResource implements Resource<Booking> {
     @Override
     public Response update(Long id, Booking booking) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
-                .entity("{'msg': 'Method not implemented.'}")
+                .entity("{\"msg\": \"Method not implemented.\"}")
                 .build();
     }
 
@@ -131,7 +131,7 @@ public class BookingResource implements Resource<Booking> {
     @Override
     public Response delete(Long id) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
-                .entity("{'msg': 'Method not implemented.'}")
+                .entity("{\"msg\": \"Method not implemented.\"}")
                 .build();
     }
 }

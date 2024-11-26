@@ -29,13 +29,13 @@ public class Authorization {
 
         if (existingUser == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{'msg': 'Wrong email'}")
+                    .entity("{\"msg\": \"Wrong email\"}")
                     .build();
         }
 
         if (!BCrypt.checkpw(user.password, existingUser.password)){
             return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("{'msg': 'Wrong password'}")
+                    .entity("{\"msg\": \"Wrong password\"}")
                     .build();
         }
 
@@ -47,7 +47,7 @@ public class Authorization {
                 .sign();
 
         return Response.ok()
-                .entity("{'token': '" + token + "'}")
+                .entity("{\"token\": \"" + token + "\"}")
                 .build();
     }
 
@@ -60,7 +60,7 @@ public class Authorization {
         try {
             if(user == null || user.firstName == null || user.lastName == null || user.email == null || user.password == null || user.role == null) {
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{'msg': 'Wrong body.'}")
+                        .entity("{\"msg\": \"Wrong body.\"}")
                         .build();
             }
             user.password = BCrypt.hashpw(user.password, BCrypt.gensalt());
@@ -87,7 +87,7 @@ public class Authorization {
             user = AppUser.find("email", jwt.getSubject()).firstResult();
             if (user == null) {
                 return Response.status(Response.Status.NOT_FOUND)
-                        .entity("{'msg': 'User not found.'}")
+                        .entity("{\"msg\": \"User not found.\"}")
                         .build();
             }
             user.password = null;

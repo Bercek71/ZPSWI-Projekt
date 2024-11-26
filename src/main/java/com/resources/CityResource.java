@@ -20,7 +20,7 @@ public class CityResource implements Resource<City> {
         List<City> cities = City.listAll();
         if (cities.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'No city was found.'}")
+                    .entity("{\"msg\": \"No city was found.\"}")
                     .build();
         }
         return Response.ok(cities).build();
@@ -31,7 +31,7 @@ public class CityResource implements Resource<City> {
         City city = City.findById(filter);
         if (city == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'City not found.'}")
+                    .entity("{\"msg\": \"City not found.\"}")
                     .build();
         }
         return Response.ok(city).build();
@@ -43,7 +43,7 @@ public class CityResource implements Resource<City> {
             city.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.status(Response.Status.CREATED)
@@ -58,7 +58,7 @@ public class CityResource implements Resource<City> {
 
         if (updateCity == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'City not found.'}")
+                    .entity("{\"msg\": \"City not found.\"}")
                     .build();
         }
 
@@ -70,7 +70,7 @@ public class CityResource implements Resource<City> {
             updateCity.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.ok(updateCity).build();
@@ -80,7 +80,7 @@ public class CityResource implements Resource<City> {
     @Override
     public Response delete(Long id) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
-                .entity("{'msg': 'Method not implemented.'}")
+                .entity("{\"msg\": \"Method not implemented.\"}")
                 .build();
     }
 }

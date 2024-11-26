@@ -19,7 +19,7 @@ public class HotelResource implements Resource<Hotel> {
         List<Room> rooms = Hotel.findAllRooms(hotelId);
         if(rooms == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'No room was found.'}")
+                    .entity("{\"msg\": \"No room was found.\"}")
                     .build();
         }
         return Response.ok(rooms).build();
@@ -40,7 +40,7 @@ public class HotelResource implements Resource<Hotel> {
                 hotels = Hotel.listAll();
             } else if (checkIn == null || checkOut == null || city == null || guests == null) {
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{'msg': 'Missing parameters.'}")
+                        .entity("{\"msg\": \"Missing parameters.\"}")
                         .build();
             } else {
                 LocalDate checkInDate = LocalDate.parse(checkIn, formatter);
@@ -49,13 +49,13 @@ public class HotelResource implements Resource<Hotel> {
             }
             if (hotels.isEmpty()) {
                 return Response.status(Response.Status.NOT_FOUND)
-                        .entity("{'msg': 'No hotel was found.'}")
+                        .entity("{\"msg\": \"No hotel was found.\"}")
                         .build();
             }
             return Response.ok(hotels).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
     }
@@ -65,7 +65,7 @@ public class HotelResource implements Resource<Hotel> {
         Hotel hotel = Hotel.findById(filter);
         if (hotel == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Hotel not found.'}")
+                    .entity("{\"msg\": \"Hotel not found.\"}")
                     .build();
         }
         return Response.ok(hotel).build();
@@ -77,7 +77,7 @@ public class HotelResource implements Resource<Hotel> {
         try {
             if(hotel == null){
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{'msg': 'Wrong body.'}")
+                        .entity("{\"msg\": \"Wrong body.\"}")
                         .build();
             }
 
@@ -103,7 +103,7 @@ public class HotelResource implements Resource<Hotel> {
             hotel.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.status(Response.Status.CREATED)
@@ -118,7 +118,7 @@ public class HotelResource implements Resource<Hotel> {
 
         if (updateHotel == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Hotel not found.'}")
+                    .entity("{\"msg\": \"Hotel not found.\"}")
                     .build();
         }
         try {
@@ -127,7 +127,7 @@ public class HotelResource implements Resource<Hotel> {
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.ok(updateHotel)
@@ -142,14 +142,14 @@ public class HotelResource implements Resource<Hotel> {
 
         if (hotel == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Hotel not found.'}")
+                    .entity("{\"msg\": \"Hotel not found.\"}")
                     .build();
         }
         try {
             hotel.delete();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.status(Response.Status.OK)

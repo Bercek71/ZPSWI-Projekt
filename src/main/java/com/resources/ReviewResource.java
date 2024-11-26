@@ -21,7 +21,7 @@ public class ReviewResource implements Resource<Review> {
         List<Review> reviews = Review.listAll();
         if(reviews.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'No review was found.'}")
+                    .entity("{\"msg\": \"No review was found.\"}")
                     .build();
         }
         return Response.ok(reviews)
@@ -33,7 +33,7 @@ public class ReviewResource implements Resource<Review> {
         Review review = Review.findById(filter);
         if (review == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Review not found.'}")
+                    .entity("{\"msg\": \"Review not found.\"}")
                     .build();
         }
         return Response.ok(review)
@@ -49,7 +49,7 @@ public class ReviewResource implements Resource<Review> {
             review.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.status(Response.Status.CREATED)
@@ -64,7 +64,7 @@ public class ReviewResource implements Resource<Review> {
 
         if (updateReview == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Review not found.'}")
+                    .entity("{\"msg\": \"Review not found.\"}")
                     .build();
         }
 
@@ -77,7 +77,7 @@ public class ReviewResource implements Resource<Review> {
             updateReview.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.ok(updateReview)
@@ -89,7 +89,7 @@ public class ReviewResource implements Resource<Review> {
     @Override
     public Response delete(Long id) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
-                .entity("{'msg': 'Method not implemented.'}")
+                .entity("{\"msg\": \"Method not implemented.\"}")
                 .build();
     }
 }

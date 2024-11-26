@@ -22,7 +22,7 @@ public class ReservationResource implements Resource<Reservation> {
         List<Reservation> reservations = Reservation.listAll();
         if (reservations.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'No reservation was found.'}")
+                    .entity("{\"msg\": \"No reservation was found.\"}")
                     .build();
         }
         return Response.ok(reservations).build();
@@ -43,7 +43,7 @@ public class ReservationResource implements Resource<Reservation> {
     @Override
     public Response create(Reservation reservation) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
-                .entity("{'msg': 'Mehtod not implemented.'}")
+                .entity("{\"msg\": \"Mehtod not implemented.\"}")
                 .build();
     }
 
@@ -54,12 +54,12 @@ public class ReservationResource implements Resource<Reservation> {
 
         if(reservation == null){
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{'msg': 'Wrong body.'}")
+                    .entity("{\"msg\": \"Wrong body.\"}")
                     .build();
         }
         if (updateReservation == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Reservation not found.'}")
+                    .entity("{\"msg\": \"Reservation not found.\"}")
                     .build();
         }
 
@@ -75,7 +75,7 @@ public class ReservationResource implements Resource<Reservation> {
             updateReservation.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.ok(updateReservation)
@@ -86,7 +86,7 @@ public class ReservationResource implements Resource<Reservation> {
     @Override
     public Response delete(Long id) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
-                .entity("{'msg': 'Method not implemented.'}")
+                .entity("{\"msg\": \"Method not implemented.\"}")
                 .build();
     }
 }

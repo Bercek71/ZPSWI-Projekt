@@ -25,7 +25,7 @@ public class RoomResource implements Resource<Room> {
 
         if(amenities == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'No amenity was found.'}")
+                    .entity("{\"msg\": \"No amenity was found.\"}")
                     .build();
         }
         return Response.ok(amenities).build();
@@ -37,7 +37,7 @@ public class RoomResource implements Resource<Room> {
         List<Room> rooms = Room.listAll();
         if (rooms.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'No room was found.'}")
+                    .entity("{\"msg\": \"No room was found.\"}")
                     .build();
         }
         return Response.ok(rooms)
@@ -49,7 +49,7 @@ public class RoomResource implements Resource<Room> {
         Room room = Room.findById(filter);
         if (room == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Room not found.'}")
+                    .entity("{\"msg\": \"Room not found.\"}")
                     .build();
         }
         return Response.ok(room).build();
@@ -63,7 +63,7 @@ public class RoomResource implements Resource<Room> {
             room.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.status(Response.Status.CREATED)
@@ -78,7 +78,7 @@ public class RoomResource implements Resource<Room> {
 
         if (updateRoom == null) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{'msg': 'Room not found.'}")
+                    .entity("{\"msg\": \"Room not found.\"}")
                     .build();
         }
 
@@ -92,7 +92,7 @@ public class RoomResource implements Resource<Room> {
             updateRoom.persist();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{'msg': '" + e.getMessage() + "'}")
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
                     .build();
         }
         return Response.ok(updateRoom)
@@ -104,7 +104,7 @@ public class RoomResource implements Resource<Room> {
     @Override
     public Response delete(Long id) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
-                .entity("{'msg': 'Method not implemented.'}")
+                .entity("{\"msg\": \"Method not implemented.\"}")
                 .build();
     }
 }
