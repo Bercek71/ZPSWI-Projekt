@@ -3,7 +3,6 @@ package com.resources;
 import com.persistence.AppUser;
 import com.persistence.Hotel;
 import io.quarkus.security.Authenticated;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
