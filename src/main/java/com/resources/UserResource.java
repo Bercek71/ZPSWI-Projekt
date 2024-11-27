@@ -21,7 +21,7 @@ public class UserResource implements Resource<AppUser> {
     @GET
     @Path("{id}/hotels")
     @Produces(MediaType.APPLICATION_JSON)
-    @Authenticated
+    @RolesAllowed("MANAGER")
     public Response getOwnedHotels(@PathParam("id") Long ownerId){
         List<Hotel> hotels = Hotel.findAllOwnedHotels(ownerId);
         if(hotels.isEmpty()){
