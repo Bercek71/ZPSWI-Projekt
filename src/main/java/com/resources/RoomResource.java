@@ -4,7 +4,6 @@ import com.persistence.Amenity;
 import com.persistence.Hotel;
 import com.persistence.Room;
 import com.persistence.RoomAmenity;
-import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;

@@ -29,13 +29,13 @@ public class Authorization {
 
         if (existingUser == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"msg\": \"Wrong email\"}")
+                    .entity("{\"msg\": \"Wrong email.\"}")
                     .build();
         }
 
         if (!BCrypt.checkpw(user.password, existingUser.password)){
             return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("{\"msg\": \"Wrong password\"}")
+                    .entity("{\"msg\": \"Wrong password.\"}")
                     .build();
         }
 
@@ -71,7 +71,9 @@ public class Authorization {
                     .entity(e.getMessage())
                     .build();
         }
-        return Response.status(Response.Status.CREATED).entity(user).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(user)
+                .build();
 
     }
 

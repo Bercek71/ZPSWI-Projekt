@@ -27,7 +27,6 @@ public class BookingResource implements Resource<Booking> {
     @Inject
     JsonWebToken jwt;
 
-
     /**
      * Retrieves all booking entities.
      *
@@ -92,41 +91,41 @@ public class BookingResource implements Resource<Booking> {
 
             Optional<AppUser> user = AppUser.find("email", jwt.getSubject()).singleResultOptional();
             if (user.isEmpty()) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: 'UserId doesn't exist.'}").build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity("{\"msg\": \"UserId doesn't exist.\"}")
+                        .build();
             }
-                //TODO: Fix this.
-                //booking.appUser = AppUser.findById(booking.userId);
-                if (booking.appUser == null) {
-                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                            .entity("{\"msg\": \"UserId doesn\"t exist.\"}")
-                            .build();
-
-                }
-                booking.appUser = user.get();
-                for (Reservation reservation : booking.reservations) {
-                    if (reservation != null) {
-                        if (reservation.startDate.isAfter(reservation.endDate)) {
-                            return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'Start date later than end date.'}").build();
-                        }
-                        reservation.booking = booking;
-                        reservation.status = Reservation.ReservationStatus.PENDING;
-                        reservation.room = Room.findById(reservation.roomId);
-                        if (!reservation.room.isReservable(reservation.startDate, reservation.endDate)) {
-                            return Response.status(Response.Status.BAD_REQUEST).entity("{msg: 'Room is not reservable.'}").build();
-                        }
-                        reservation.price = Period.between(reservation.startDate, reservation.endDate).getDays() * reservation.room.pricePerNight;
-                        booking.priceTotal += reservation.price;
+            for (Reservation reservation : booking.reservations) {
+                if (reservation != null) {
+                    if (reservation.startDate.isAfter(reservation.endDate)) {
+                        return Response.status(Response.Status.BAD_REQUEST)
+                                .entity("{\"msg\": \"Start date, later than end date.\"}")
+                                .build();
                     }
+                    reservation.booking = booking;
+                    reservation.status = Reservation.ReservationStatus.PENDING;
+                    reservation.room = Room.findById(reservation.roomId);
+                    if (!reservation.room.isReservable(reservation.startDate, reservation.endDate)) {
+                        return Response.status(Response.Status.BAD_REQUEST)
+                                .entity("{\"msg\": \"Room is not reservable.\"}")
+                                .build();
+                    }
+                    reservation.price = Period.between(reservation.startDate, reservation.endDate)
+                            .getDays() * reservation.room.pricePerNight;
+                    booking.priceTotal += reservation.price;
                 }
-                booking.persist();
+            }
+            booking.persist();
 
         }catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{msg: '" + e.getMessage() + "'}")
+                    .build();
         }
-        return Response.status(Response.Status.CREATED).entity(booking).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(booking)
+                .build();
     }
-
-
     /*
 
     //TODO: Fix this.
