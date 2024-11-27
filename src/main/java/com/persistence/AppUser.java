@@ -32,6 +32,7 @@ public class AppUser extends PanacheEntity {
     @ManyToMany(mappedBy = "receptionists")
     List<Hotel> hotels;
 
+
     public enum AppUserRole {
         EMPLOYEE, //odklikava platby
         USER,

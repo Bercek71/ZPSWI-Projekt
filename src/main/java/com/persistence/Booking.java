@@ -2,6 +2,7 @@ package com.persistence;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,14 +17,9 @@ public class Booking extends PanacheEntity {
 
     @ManyToOne
     @JoinColumn(name = "app_user_id")
-    @JsonbProperty("appUserId")
     public AppUser appUser;
 
-    @Transient
-    @JsonbProperty("userId")
-    public Long userId;
-
-    @Transient
+    @OneToMany(mappedBy = "booking", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonbProperty("reservations")
     public List<Reservation> reservations = new ArrayList<>();
 }

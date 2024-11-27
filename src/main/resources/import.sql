@@ -53,15 +53,15 @@ insert into address (id, name, land_registry_number, house_number, city_id) valu
 insert into address (id, name, land_registry_number, house_number, city_id) values (9, 'Passeig de Gràcia', 123464, 14, 5);
 
 
-insert into hotel(id, name, address_id) values (1,'Hotel de Crillon', 1);
-insert into hotel(id, name, address_id) values (2,'Hotel Ritz', 2);
-insert into hotel(id, name, address_id) values (3,'Hotel George V', 3);
-insert into hotel(id, name, address_id) values (4,'Hotel Adlon', 4);
-insert into hotel(id, name, address_id) values (5,'Hotel Pedro', 5);
-insert into hotel(id, name, address_id) values (6,'Hotel Antonio', 6);
-insert into hotel(id, name, address_id) values (7,'Hotel Maria', 7);
-insert into hotel(id, name, address_id) values (8,'Hotel New York', 8);
-insert into hotel(id, name, address_id) values (23,'Hotel Ostrava', 9);
+insert into hotel(id, name, address_id, owner_id) values (1,'Hotel de Crillon', 1, 1);
+insert into hotel(id, name, address_id, owner_id) values (2,'Hotel Ritz', 2, 1);
+insert into hotel(id, name, address_id, owner_id) values (3,'Hotel George V', 3, 2);
+insert into hotel(id, name, address_id, owner_id) values (4,'Hotel Adlon', 4, 1);
+insert into hotel(id, name, address_id, owner_id) values (5,'Hotel Pedro', 5, 2);
+insert into hotel(id, name, address_id, owner_id) values (6,'Hotel Antonio', 6, 2);
+insert into hotel(id, name, address_id, owner_id) values (7,'Hotel Maria', 7, 1);
+insert into hotel(id, name, address_id, owner_id) values (8,'Hotel New York', 8, 1);
+insert into hotel(id, name, address_id, owner_id) values (23,'Hotel Ostrava', 9, 1);
 
 
 insert into room(id, room_number, price_per_night, type, is_available, hotel_id, max_guests) values (1, 101, 100, 'SINGLE', true, 1, 2);
