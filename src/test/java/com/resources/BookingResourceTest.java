@@ -158,7 +158,8 @@ public class BookingResourceTest {
     void updateShouldReturnNotImplemented() {
         Booking request = new Booking();
         request.priceTotal = 100;
-        request.userId = 1L;
+        //TODO: Fix this.
+        //request.userId = 1L;
 
         given()
             .header("Content-Type", "application/json")
