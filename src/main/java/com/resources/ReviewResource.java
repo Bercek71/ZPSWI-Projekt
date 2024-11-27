@@ -19,16 +19,25 @@ public class ReviewResource implements Resource<Review> {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllEntities() {
         List<Review> reviews = Review.listAll();
-        return Response.ok(reviews).build();
+        if(reviews.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"msg\": \"No review was found.\"}")
+                    .build();
+        }
+        return Response.ok(reviews)
+                .build();
     }
 
     @Override
     public Response find(Long filter) {
-        AppUser user = AppUser.findById(filter);
-        if (user == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        Review review = Review.findById(filter);
+        if (review == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"msg\": \"Review not found.\"}")
+                    .build();
         }
-        return Response.ok(user).build();
+        return Response.ok(review)
+                .build();
     }
 
     @Transactional
@@ -39,9 +48,13 @@ public class ReviewResource implements Resource<Review> {
             review.appUser = AppUser.findById(review.userId);
             review.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
+                    .build();
         }
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(review)
+                .build();
     }
 
     @Transactional
@@ -50,7 +63,9 @@ public class ReviewResource implements Resource<Review> {
         Review updateReview = Review.findById(id);
 
         if (updateReview == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Review not found.").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"msg\": \"Review not found.\"}")
+                    .build();
         }
 
         try {
@@ -61,15 +76,20 @@ public class ReviewResource implements Resource<Review> {
 
             updateReview.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
+                    .build();
         }
-        return Response.ok(updateReview).build();
+        return Response.ok(updateReview)
+                .build();
     }
 
 
     @Transactional
     @Override
     public Response delete(Long id) {
-        return null;
+        return Response.status(Response.Status.NOT_IMPLEMENTED)
+                .entity("{\"msg\": \"Method not implemented.\"}")
+                .build();
     }
 }

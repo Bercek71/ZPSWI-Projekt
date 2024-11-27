@@ -18,29 +18,39 @@ public class AmenityResource implements Resource<Amenity>{
     public Response findAllEntities() {
         List<Amenity> amenities = Amenity.listAll();
         if (amenities.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"msg\": \"No amenity was found.\"}")
+                    .build();
         }
-        return Response.ok(amenities).build();
+        return Response.ok(amenities)
+                .build();
     }
 
     @Override
     public Response find(Long filter) {
         Amenity amenity = Amenity.findById(filter);
         if (amenity == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"msg\": \"Amenity not found.\"}")
+                    .build();
         }
-        return Response.ok(amenity).build();
+        return Response.ok(amenity)
+                .build();
     }
 
     @Transactional
     @Override
-    public Response create(Amenity entity) {
+    public Response create(Amenity amenity) {
         try{
-            entity.persist();
+            amenity.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
+                    .build();
         }
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(amenity)
+                .build();
     }
 
     @Transactional
@@ -50,7 +60,9 @@ public class AmenityResource implements Resource<Amenity>{
             Amenity updateAmenity = Amenity.findById(id);
 
             if (updateAmenity == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Amenity not found.").build();
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("{\"msg\": \"Amenity not found.\"}")
+                        .build();
             }
 
             try {
@@ -58,14 +70,19 @@ public class AmenityResource implements Resource<Amenity>{
 
                 updateAmenity.persist();
             } catch (Exception e) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity("{\"msg\": \"" + e.getMessage() + "\"}")
+                        .build();
             }
-            return Response.ok(updateAmenity).build();
+            return Response.ok(updateAmenity)
+                    .build();
         }
     }
 
     @Override
     public Response delete(Long id) {
-        return null;
+        return Response.status(Response.Status.NOT_IMPLEMENTED)
+                .entity("{\"msg\": \"Method not implemented.\"}")
+                .build();
     }
 }
