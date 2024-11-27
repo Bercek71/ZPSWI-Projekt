@@ -24,7 +24,9 @@ public class RoomResource implements Resource<Room> {
         List<Amenity> amenities = RoomAmenity.findAllAmenitiesForRoom(roomId);
 
         if(amenities == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'No amenity was found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"msg\": \"No amenity was found.\"}")
+                    .build();
         }
         return Response.ok(amenities).build();
     }
@@ -34,16 +36,21 @@ public class RoomResource implements Resource<Room> {
     public Response findAllEntities() {
         List<Room> rooms = Room.listAll();
         if (rooms.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'No room was found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"msg\": \"No room was found.\"}")
+                    .build();
         }
-        return Response.ok(rooms).build();
+        return Response.ok(rooms)
+                .build();
     }
 
     @Override
     public Response find(Long filter) {
         Room room = Room.findById(filter);
         if (room == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'Room not found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"msg\": \"Room not found.\"}")
+                    .build();
         }
         return Response.ok(room).build();
     }
@@ -55,9 +62,13 @@ public class RoomResource implements Resource<Room> {
             room.hotel = Hotel.findById(room.hotelId);
             room.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
+                    .build();
         }
-        return Response.status(Response.Status.CREATED).entity(room).build();
+        return Response.status(Response.Status.CREATED)
+                .entity(room)
+                .build();
     }
 
     @Transactional
@@ -66,7 +77,9 @@ public class RoomResource implements Resource<Room> {
         Room updateRoom = Room.findById(id);
 
         if (updateRoom == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("{msg: 'Room not found.'}").build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"msg\": \"Room not found.\"}")
+                    .build();
         }
 
         try {
@@ -78,15 +91,20 @@ public class RoomResource implements Resource<Room> {
 
             updateRoom.persist();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{msg: '" + e.getMessage() + "'}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"msg\": \"" + e.getMessage() + "\"}")
+                    .build();
         }
-        return Response.ok(updateRoom).build();
+        return Response.ok(updateRoom)
+                .build();
     }
 
 
     @Transactional
     @Override
     public Response delete(Long id) {
-        return Response.status(Response.Status.NOT_IMPLEMENTED).entity("{msg: 'Function not implemented.'}").build();
+        return Response.status(Response.Status.NOT_IMPLEMENTED)
+                .entity("{\"msg\": \"Method not implemented.\"}")
+                .build();
     }
 }

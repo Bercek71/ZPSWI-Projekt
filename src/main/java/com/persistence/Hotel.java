@@ -3,6 +3,7 @@ package com.persistence;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.panache.common.Parameters;
 import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -40,9 +41,10 @@ public class Hotel extends PanacheEntity {
     @JoinColumn(name = "address_id", nullable = false)
     public Address address;
 
-    @Transient
-    @JsonbProperty("addressId")
-    public Long addressId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
+    @JsonbTransient
+    public AppUser owner;
 
     // NamedQuery usage in your repository or service class
     public static List<Hotel> findAvailableHotels(LocalDate checkIn, LocalDate checkOut, Integer guests, Long cityId) {
@@ -71,5 +73,9 @@ public class Hotel extends PanacheEntity {
             room.type = (String) row[5];
             return room;
         }).toList();
+    }
+
+    public static List<Hotel> findAllOwnedHotels(Long ownerId) {
+        return find("select h from Hotel h where h.owner.id = ?1", ownerId).list();
     }
 }

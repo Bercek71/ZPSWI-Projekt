@@ -28,11 +28,15 @@ public class Authorization {
         AppUser existingUser = AppUser.find("email", user.email).firstResult();
 
         if (existingUser == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Wrong email " + user.email).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"msg\": \"Wrong email\"}")
+                    .build();
         }
 
         if (!BCrypt.checkpw(user.password, existingUser.password)){
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Wrong password " + user.email).build();
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"msg\": \"Wrong password\"}")
+                    .build();
         }
 
         //Momentálně Secret key na pevno, při real-life využití, je třeba toto mít schované v nějakém vaultu, popřípadě na serveru, aby to nešlo na git.
@@ -42,7 +46,9 @@ public class Authorization {
                 .expiresAt(System.currentTimeMillis() / 1000 + 3600) //1 hodina MAGIC NUMBERS
                 .sign();
 
-        return Response.ok().entity(token).build();
+        return Response.ok()
+                .entity("{\"token\": \"" + token + "\"}")
+                .build();
     }
 
     @POST
@@ -52,15 +58,22 @@ public class Authorization {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response register(AppUser user) {
         try {
-            if(user == null) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Wrong body").build();
+            if(user == null || user.firstName == null || user.lastName == null || user.email == null || user.password == null || user.role == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"msg\": \"Wrong body.\"}")
+                        .build();
             }
             user.password = BCrypt.hashpw(user.password, BCrypt.gensalt());
             user.persist();
+
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(e.getMessage())
+                    .build();
         }
-        return Response.status(Response.Status.CREATED).entity("Successfully created new user").build();
+        return Response.status(Response.Status.CREATED)
+                .entity(user)
+                .build();
     }
 
     @GET
@@ -73,12 +86,20 @@ public class Authorization {
         try {
             user = AppUser.find("email", jwt.getSubject()).firstResult();
             if (user == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("User not found.").build();
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("{\"msg\": \"User not found.\"}")
+                        .build();
             }
             user.password = null;
+
         } catch(Exception e){
-            return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e)
+                    .build();
         }
-        return Response.status(Response.Status.OK).entity(user).build();
+
+        return Response.status(Response.Status.OK)
+                .entity(user)
+                .build();
     }
 }
