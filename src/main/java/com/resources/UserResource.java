@@ -1,6 +1,7 @@
 package com.resources;
 
 import com.persistence.AppUser;
+import com.persistence.Hotel;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 
