@@ -71,9 +71,8 @@ public class Authorization {
                     .entity(e.getMessage())
                     .build();
         }
-        return Response.status(Response.Status.CREATED)
-                .entity(user)
-                .build();
+        return Response.status(Response.Status.CREATED).entity(user).build();
+
     }
 
     @GET

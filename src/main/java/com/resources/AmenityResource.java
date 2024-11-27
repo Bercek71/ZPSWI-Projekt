@@ -1,6 +1,8 @@
 package com.resources;
 
 import com.persistence.Amenity;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -40,6 +42,7 @@ public class AmenityResource implements Resource<Amenity>{
 
     @Transactional
     @Override
+    @RolesAllowed("MANAGER")
     public Response create(Amenity amenity) {
         try{
             amenity.persist();
@@ -55,6 +58,7 @@ public class AmenityResource implements Resource<Amenity>{
 
     @Transactional
     @Override
+    @RolesAllowed("MANAGER")
     public Response update(Long id, Amenity entity) {
         {
             Amenity updateAmenity = Amenity.findById(id);

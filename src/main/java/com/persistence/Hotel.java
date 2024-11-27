@@ -46,6 +46,15 @@ public class Hotel extends PanacheEntity {
     @JsonbTransient
     public AppUser owner;
 
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_hotel", // Name of the join table
+            joinColumns = @JoinColumn(name = "hotel_id"), // Foreign key for Hotel
+            inverseJoinColumns = @JoinColumn(name = "user_id") // Foreign key for User
+    )
+    List<AppUser> receptionists;
+
     // NamedQuery usage in your repository or service class
     public static List<Hotel> findAvailableHotels(LocalDate checkIn, LocalDate checkOut, Integer guests, Long cityId) {
         return find("#Hotel.findAvailableHotels",

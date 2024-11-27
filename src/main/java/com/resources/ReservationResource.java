@@ -4,6 +4,7 @@ import com.persistence.AppUser;
 import com.persistence.Booking;
 import com.persistence.Reservation;
 import com.persistence.Room;
+import io.quarkus.security.Authenticated;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -29,6 +30,7 @@ public class ReservationResource implements Resource<Reservation> {
     }
 
     @Override
+    @Authenticated
     public Response find(Long filter) {
         AppUser user = AppUser.findById(filter);
         if (user == null) {
@@ -49,6 +51,7 @@ public class ReservationResource implements Resource<Reservation> {
 
     @Transactional
     @Override
+    @Authenticated
     public Response update(Long id, Reservation reservation) {
         Reservation updateReservation = Reservation.findById(id);
 
@@ -84,6 +87,7 @@ public class ReservationResource implements Resource<Reservation> {
 
     @Transactional
     @Override
+    @Authenticated
     public Response delete(Long id) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
                 .entity("{\"msg\": \"Method not implemented.\"}")

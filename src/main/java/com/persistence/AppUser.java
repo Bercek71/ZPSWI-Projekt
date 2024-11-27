@@ -4,6 +4,8 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "app_user")
 public class AppUser extends PanacheEntity {
@@ -27,9 +29,13 @@ public class AppUser extends PanacheEntity {
     @JsonbProperty("role")
     public AppUserRole role;
 
+    @ManyToMany(mappedBy = "receptionists")
+    List<Hotel> hotels;
+
+
     public enum AppUserRole {
-        ADMIN,
+        EMPLOYEE, //odklikava platby
         USER,
-        MANAGER
+        MANAGER // CRUD operace nad hotelem
     }
 }

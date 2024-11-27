@@ -4,6 +4,8 @@ import com.persistence.Amenity;
 import com.persistence.Hotel;
 import com.persistence.Room;
 import com.persistence.RoomAmenity;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -57,6 +59,7 @@ public class RoomResource implements Resource<Room> {
 
     @Transactional
     @Override
+    @RolesAllowed("MANAGER")
     public Response create(Room room) {
         try {
             room.hotel = Hotel.findById(room.hotelId);
@@ -73,6 +76,7 @@ public class RoomResource implements Resource<Room> {
 
     @Transactional
     @Override
+    @RolesAllowed("MANAGER")
     public Response update(Long id, Room room) {
         Room updateRoom = Room.findById(id);
 
@@ -102,6 +106,7 @@ public class RoomResource implements Resource<Room> {
 
     @Transactional
     @Override
+    @RolesAllowed("MANAGER")
     public Response delete(Long id) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
                 .entity("{\"msg\": \"Method not implemented.\"}")

@@ -3,6 +3,7 @@ package com.resources;
 import com.persistence.AppUser;
 import com.persistence.Hotel;
 import com.persistence.Review;
+import io.quarkus.security.Authenticated;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -42,6 +43,7 @@ public class ReviewResource implements Resource<Review> {
 
     @Transactional
     @Override
+    @Authenticated
     public Response create(Review review) {
         try {
             review.hotel = Hotel.findById(review.hotelId);
@@ -59,6 +61,7 @@ public class ReviewResource implements Resource<Review> {
 
     @Transactional
     @Override
+    @Authenticated
     public Response update(Long id, Review review) {
         Review updateReview = Review.findById(id);
 
@@ -87,6 +90,7 @@ public class ReviewResource implements Resource<Review> {
 
     @Transactional
     @Override
+    @Authenticated
     public Response delete(Long id) {
         return Response.status(Response.Status.NOT_IMPLEMENTED)
                 .entity("{\"msg\": \"Method not implemented.\"}")
