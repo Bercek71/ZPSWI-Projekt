@@ -1,9 +1,6 @@
 package com.resources;
 
-import com.persistence.AppUser;
-import com.persistence.Booking;
-import com.persistence.Reservation;
-import com.persistence.Room;
+import com.persistence.*;
 import io.quarkus.security.Authenticated;
 
 import jakarta.inject.Inject;
@@ -126,7 +123,7 @@ public class BookingResource implements Resource<Booking> {
                 .entity(booking)
                 .build();
     }
-    /*
+
 
     //TODO: Fix this.
     @POST
@@ -183,8 +180,6 @@ public class BookingResource implements Resource<Booking> {
         return Response.status(Response.Status.CREATED).entity(unregisteredBooking).build();
 
     }
-
-     */
 
     /**
      * Updates an existing booking by its ID.
